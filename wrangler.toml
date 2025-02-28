@@ -1,6 +1,0 @@
-# wrangler.toml
-name = 'caprcpet'
-type = "static"
-
-[build]
-upload = { dir = "./public" }
