@@ -1,0 +1,869 @@
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>會考落點分析邀請碼</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3a0ca3;
+      --background-color: #f8f9fa;
+      --text-color: #2b2d42;
+      --card-background: #ffffff;
+      --shadow-color: rgba(0, 0, 0, 0.08);
+      --accent-color: #ef476f;
+      --success-color: #06d6a0;
+      --border-radius: 16px;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: var(--background-color);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text-color);
+      line-height: 1.6;
+      background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      background: var(--card-background);
+      padding: 2.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 30px var(--shadow-color);
+      max-width: 650px;
+      width: 90%;
+      text-align: center;
+      transition: var(--transition);
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      animation: slideInFromTop 0.8s ease-out;
+    }
+
+    @keyframes slideInFromTop {
+      0% {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    h1, h2 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1 { 
+      font-size: 2.2rem; 
+      font-weight: 700; 
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 0;
+    }
+    h2 { font-size: 1.8rem; font-weight: 500; }
+
+    .code-card {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .code-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+    }
+
+    .invitation-code-container {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      margin: 1.5rem 0;
+      box-shadow: 0 5px 15px var(--shadow-color);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .invitation-code {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      padding: 1.2rem 1.5rem;
+      background-color: rgba(67, 97, 238, 0.05);
+      display: inline-block;
+      border: 2px solid var(--primary-color);
+      border-right: none;
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 2px;
+    }
+
+    .copy-button {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border: none;
+      padding: 1rem 1.5rem;
+      font-size: 1.3rem;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .copy-button:hover { 
+      transform: translateY(-3px);
+      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .timer {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: var(--accent-color);
+      background-color: rgba(239, 71, 111, 0.1);
+      padding: 0.8rem 1.2rem;
+      border-radius: 30px;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .progress-container {
+      width: 100%;
+      background: #f1f3f9;
+      border-radius: 30px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      height: 10px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 30px;
+      transition: width 1s linear;
+    }
+
+    .last-update {
+      font-size: 0.9rem;
+      color: var(--text-color);
+      opacity: 0.7;
+      margin-top: 0.5rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+
+    .button {
+      background: white;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .button:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .info-section {
+      background: #f8f9fa;
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      margin-top: 2rem;
+      text-align: left;
+      box-shadow: 0 5px 15px var(--shadow-color);
+    }
+
+    .info-section h3 {
+      color: var(--primary-color);
+      margin-top: 0;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .info-section p {
+      margin-bottom: 1rem;
+      position: relative;
+      padding-left: 30px;
+    }
+
+    .icon {
+      position: absolute;
+      left: 0;
+      top: 3px;
+      font-size: 1.2em;
+      color: var(--primary-color);
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--success-color);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      opacity: 0;
+      transition: var(--transition);
+      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+      z-index: 1000;
+    }
+
+    .footer {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      opacity: 0.7;
+      text-align: center;
+      padding: 1rem;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+      font-weight: 500;
+    }
+
+    a:hover { color: var(--secondary-color); }
+    a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--secondary-color);
+      transform: scaleX(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s ease-out;
+    }
+    a:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+
+    .floating-buttons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .floating-button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 1.2rem;
+    }
+
+    .floating-button:hover {
+      transform: translateY(-3px) rotate(5deg);
+      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: var(--card-background);
+      margin: 15% auto;
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      width: 80%;
+      max-width: 500px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      animation: modalFadeIn 0.5s;
+      position: relative;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      transition: var(--transition);
+    }
+    .close:hover {
+      color: var(--text-color);
+      cursor: pointer;
+    }
+
+    #qrCode {
+      background-color: white;
+      padding: 15px;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+      margin: 15px auto;
+      display: inline-block;
+    }
+    #qrCode:hover { transform: scale(1.05); }
+
+    .marquee {
+      width: 100%;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 12px 0;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .marquee-content {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .marquee-content:hover { animation-play-state: paused; }
+
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid var(--primary-color);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      margin: auto;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Dark mode */
+    body.dark-mode {
+      --primary-color: #4cc9f0;
+      --secondary-color: #4895ef;
+      --background-color: #121212;
+      --text-color: #e0e0e0;
+      --card-background: #1e1e1e;
+      --shadow-color: rgba(0,0,0,0.3);
+      --accent-color: #f72585;
+      --success-color: #06d6a0;
+    }
+
+    body.dark-mode {
+      background-image: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
+    }
+
+    body.dark-mode .invitation-code {
+      background-color: rgba(76, 201, 240, 0.1);
+    }
+
+    body.dark-mode .code-card {
+      background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+    }
+
+    body.dark-mode .progress-container {
+      background: #2a2a2a;
+    }
+
+    body.dark-mode .button {
+      background: #2a2a2a;
+      color: var(--primary-color);
+    }
+
+    body.dark-mode .info-section {
+      background: #1e1e1e;
+    }
+
+    body.dark-mode .footer {
+      background-color: rgba(30, 30, 30, 0.7);
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 1.5rem; width: 95%; }
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+      .invitation-code { font-size: 1.5rem; padding: 1rem; }
+      .copy-button { font-size: 1.1rem; padding: 0.8rem; }
+      .action-buttons { flex-direction: column; align-items: stretch; }
+      .button { width: 100%; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 1rem; }
+      .invitation-code-container { flex-direction: column; }
+      .invitation-code {
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        border-right: 2px solid var(--primary-color);
+        border-bottom: none;
+      }
+      .copy-button {
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+      }
+      .floating-buttons {
+        bottom: 10px;
+        right: 10px;
+      }
+      .floating-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+
+    .help-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .help-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0.8rem;
+      border-radius: var(--border-radius);
+      background-color: rgba(67, 97, 238, 0.05);
+      transition: var(--transition);
+      border-left: 3px solid var(--primary-color);
+    }
+
+    .help-item:hover {
+      transform: translateX(5px);
+      background-color: rgba(67, 97, 238, 0.1);
+      box-shadow: 0 3px 10px var(--shadow-color);
+    }
+
+    .help-icon {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .help-text {
+      line-height: 1.5;
+      font-size: 1rem;
+    }
+
+    .modal-content h2 {
+      margin-top: 0.5rem;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .modal-content h2 i {
+      margin-right: 0.5rem;
+    }
+
+    body.dark-mode .help-item {
+      background-color: rgba(76, 201, 240, 0.05);
+      border-left: 3px solid var(--primary-color);
+    }
+    
+    body.dark-mode .help-item:hover {
+      background-color: rgba(76, 201, 240, 0.1);
+    }
+
+    @media (max-width: 480px) {
+      .help-item {
+        padding: 0.6rem;
+      }
+      
+      .help-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+      }
+      
+      .help-text {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="marquee">
+    <div class="marquee-content">
+      歡迎使用會考落點分析系統！如系統有任何問題請使用異常回報系統回報給我們
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>會考落點分析邀請碼</h1>
+    
+    <div class="code-card">
+      <div class="invitation-code-container">
+        <div class="invitation-code" id="invitationCode"></div>
+        <button class="copy-button" onclick="copyInvitationCode()">
+          <i class="fas fa-copy"></i> 複製
+        </button>
+      </div>
+      <div id="lastUpdate" class="last-update"></div>
+      <div class="timer" id="timer"></div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="button" onclick="showQRCode()"><i class="fas fa-qrcode"></i> 顯示QR碼</button>
+      <button class="button" onclick="shareInvitationCode()"><i class="fas fa-share-alt"></i> 分享邀請碼</button>
+      <button class="button" onclick="manualRefresh()"><i class="fas fa-sync-alt"></i> 手動更新</button>
+    </div>
+    
+    <div class="info-section">
+      <h3>使用須知</h3>
+      <p><i class="fas fa-sync-alt icon"></i>此邀請碼每小時自動更新一次。</p>
+      <p><i class="fas fa-clock icon"></i>請在邀請碼有效期內使用落點分析系統。</p>
+      <p><i class="fas fa-chart-line icon"></i> <a href="https://ctttw.github.io/spare/">返回分析平台</a> 。</p>
+      <p><i class="fas fa-chart-bar icon"></i>查看 <a href="https://tyctw.github.io/analysis/">全國會考統計資料</a> 。</p>
+    </div>
+  </div>
+  
+  <div class="floating-buttons">
+    <button id="darkModeToggle" class="floating-button">
+      <i class="fas fa-moon"></i>
+    </button>
+    <button id="helpButton" class="floating-button">
+      <i class="fas fa-question"></i>
+    </button>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 會考落點分析邀請碼. All rights reserved.
+  </div>
+
+  <div class="toast" id="toast">已成功複製邀請碼！</div>
+
+  <div id="qrModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>邀請碼 QR 碼</h2>
+      <div id="qrCode"></div>
+    </div>
+  </div>
+
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <span class="close help-close">&times;</span>
+      <h2><i class="fas fa-info-circle"></i> 使用說明</h2>
+      <div class="help-content">
+        <div class="help-item">
+          <div class="help-icon"><i class="fas fa-clock"></i></div>
+          <div class="help-text">此頁面顯示會考落點分析邀請碼，每小時自動更新。</div>
+        </div>
+        <div class="help-item">
+          <div class="help-icon"><i class="fas fa-copy"></i></div>
+          <div class="help-text">點擊「複製」按鈕將邀請碼複製到剪貼簿。</div>
+        </div>
+        <div class="help-item">
+          <div class="help-icon"><i class="fas fa-qrcode"></i></div>
+          <div class="help-text">點擊「顯示QR碼」生成邀請碼的QR碼。</div>
+        </div>
+        <div class="help-item">
+          <div class="help-icon"><i class="fas fa-share-alt"></i></div>
+          <div class="help-text">點擊「分享邀請碼」啟動原生分享功能（若瀏覽器支援）。</div>
+        </div>
+        <div class="help-item">
+          <div class="help-icon"><i class="fas fa-sync-alt"></i></div>
+          <div class="help-text">點擊「手動更新」可立即從後端獲取最新邀請碼。</div>
+        </div>
+        <div class="help-item">
+          <div class="help-icon"><i class="fas fa-hourglass-half"></i></div>
+          <div class="help-text">進度條顯示距離邀請碼更新的倒數進度。</div>
+        </div>
+        <div class="help-item">
+          <div class="help-icon"><i class="fas fa-moon"></i></div>
+          <div class="help-text">使用深色模式切換按鈕切換頁面主題。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    // 從後端 Google Apps Script 讀取邀請碼，並加入載入動畫效果
+    function updateInvitationCode() {
+      const codeEl = document.getElementById('invitationCode');
+      // 顯示 loading spinner
+      codeEl.innerHTML = '<div class="spinner"></div>';
+      const backendURL = 'https://script.google.com/macros/s/AKfycbwBUN15_ovfAOyhhgAF1adShWiDc2b4ouibcjZP2y-RY-1qI_IxRndV7o3lZ_WYLhnn/exec';
+      fetch(backendURL)
+        .then(response => response.json())
+        .then(data => {
+          const code = data.invitationCode;
+          codeEl.textContent = code;
+          codeEl.classList.add('fade-in');
+          setTimeout(() => codeEl.classList.remove('fade-in'), 500);
+          document.getElementById('lastUpdate').textContent = "最後更新：" + new Date().toLocaleString();
+        })
+        .catch(error => {
+          console.error('Error fetching invitation code:', error);
+        });
+    }
+
+    // 更新倒數計時與進度條
+    function updateTimer() {
+      const now = new Date();
+      const nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0, 0);
+      const timeLeft = nextHour - now;
+      
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      const timerElement = document.getElementById('timer');
+      timerElement.innerHTML = `<i class="fas fa-hourglass-half"></i> 更新倒數：${minutes}分${seconds}秒`;
+
+      const hourDuration = 3600000;
+      let progress = ((hourDuration - timeLeft) / hourDuration) * 100;
+      progress = Math.min(100, Math.max(0, progress));
+      document.getElementById('progressBar').style.width = progress + '%';
+
+      if (timeLeft <= 0) {
+        updateInvitationCode();
+      }
+    }
+
+    // 複製邀請碼
+    function copyInvitationCode() {
+      const invitationCode = document.getElementById('invitationCode').textContent;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(invitationCode).then(() => {
+          showToast("已成功複製邀請碼！");
+        }).catch(err => {
+          console.error('無法複製到剪貼簿:', err);
+          alert('複製失敗，請手動複製邀請碼。');
+        });
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = invitationCode;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          showToast("已成功複製邀請碼！");
+        } catch (err) {
+          console.error('無法複製到剪貼簿:', err);
+          alert('複製失敗，請手動複製邀請碼。');
+        }
+        document.body.removeChild(textArea);
+      }
+    }
+
+    // 顯示 Toast 提示
+    function showToast(message = "已成功複製邀請碼！") {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translate(-50%, 0)';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translate(-50%, -20px)';
+      }, 2000);
+    }
+
+    // 顯示 QR 碼模態框
+    function showQRCode() {
+      const modal = document.getElementById("qrModal");
+      const span = document.getElementsByClassName("close")[0];
+      const qrCodeDiv = document.getElementById("qrCode");
+      
+      qrCodeDiv.innerHTML = '';
+      new QRCode(qrCodeDiv, {
+        text: document.getElementById('invitationCode').textContent,
+        width: 128,
+        height: 128,
+        colorDark : "#000000",
+        colorLight : document.body.classList.contains('dark-mode') ? "#ffffff" : "#ffffff"
+      });
+      
+      modal.style.display = "block";
+      
+      span.onclick = function() { modal.style.display = "none"; };
+      
+      window.onclick = function(event) {
+        if (event.target == modal) { modal.style.display = "none"; }
+      }
+    }
+
+    // 分享邀請碼
+    function shareInvitationCode() {
+      const invitationCode = document.getElementById('invitationCode').textContent;
+      if (navigator.share) {
+        navigator.share({
+          title: '會考落點分析邀請碼',
+          text: `我的會考落點分析邀請碼是：${invitationCode}`,
+          url: 'https://tyctw.github.io/'
+        }).then(() => {
+          console.log('邀請碼分享成功');
+        }).catch((error) => {
+          console.log('邀請碼分享失敗', error);
+        });
+      } else {
+        alert(`請複製以下文字進行分享：\n\n我的會考落點分析邀請碼是：${invitationCode}\n\n網站: https://ctttw.github.io/spare/`);
+      }
+    }
+
+    // 手動更新邀請碼
+    function manualRefresh() {
+      updateInvitationCode();
+      showToast("邀請碼已更新！");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode);
+      updateDarkModeIcon();
+      
+      if (document.getElementById("qrModal").style.display === "block") {
+        showQRCode();
+      }
+    }
+
+    function updateDarkModeIcon() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    }
+
+    function initDarkMode() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const savedDarkMode = localStorage.getItem('darkMode');
+      if (savedDarkMode === 'true') { document.body.classList.add('dark-mode'); }
+      updateDarkModeIcon();
+      darkModeToggle.addEventListener('click', toggleDarkMode);
+    }
+
+    // 初始化「使用說明」模態框
+    function initHelp() {
+      const helpButton = document.getElementById('helpButton');
+      const helpModal = document.getElementById('helpModal');
+      const helpClose = document.getElementsByClassName('help-close')[0];
+      helpButton.addEventListener('click', function() { helpModal.style.display = "block"; });
+      helpClose.addEventListener('click', function() { helpModal.style.display = "none"; });
+      window.addEventListener('click', function(e) {
+        if (e.target == helpModal) { helpModal.style.display = "none"; }
+      });
+    }
+
+    updateInvitationCode();
+    setInterval(updateTimer, 1000);
+    initDarkMode();
+    initHelp();
+
+    // 防止複製
+    document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
+    // 防止截圖（僅適用於部分瀏覽器）
+    document.addEventListener('keyup', function(e) {
+      if (e.key == 'PrintScreen') {
+        navigator.clipboard.writeText('');
+        alert('截圖功能已被禁用');
+      }
+    });
+    // 防止右鍵點擊
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+    // 防止拖曳選擇文字
+    document.onselectstart = function() { return false; };
+  </script>
+</body>
+</html>
