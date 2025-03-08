@@ -28,21 +28,6 @@ function toggleVocationalGroup() {
     // Add small delay before adding visible class for smooth animation
     setTimeout(() => {
       vocationalGroupContainer.classList.add('visible');
-      
-      // Create staggered animation for cards
-      const cards = document.querySelectorAll('.vocational-group-card');
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(20px)';
-          card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-          
-          requestAnimationFrame(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          });
-        }, index * 50); // Stagger each card by 50ms
-      });
     }, 10);
   } else {
     vocationalGroupContainer.classList.remove('visible');
@@ -71,69 +56,37 @@ function getSelectedVocationalGroups() {
 function handleVocationalGroupSelection(event) {
   const checkbox = event.target;
   const allCheckbox = document.getElementById('groupAll');
-  const cardInner = checkbox.nextElementSibling;
+  const checkboxLabel = checkbox.nextElementSibling;
   
   // Add visual feedback with animation
   if (checkbox.checked) {
-    // Create ripple effect on the card
-    const ripple = document.createElement('span');
-    ripple.className = 'selection-ripple';
-    ripple.style.cssText = `
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(42, 157, 143, 0.3) 0%, transparent 70%);
-      border-radius: 10px;
-      opacity: 1;
-      pointer-events: none;
-      animation: rippleEffect 0.6s ease-out forwards;
-    `;
-    
-    if (checkbox.id === 'groupAll') {
-      ripple.style.background = 'radial-gradient(circle, rgba(233, 196, 106, 0.3) 0%, transparent 70%)';
-    }
-    
-    cardInner.appendChild(ripple);
-    
+    checkboxLabel.classList.add('pulse-animation');
     setTimeout(() => {
-      ripple.remove();
-    }, 600);
+      checkboxLabel.classList.remove('pulse-animation');
+    }, 500);
   }
   
   // If "All" option is checked, uncheck all other options
   if (checkbox.id === 'groupAll' && checkbox.checked) {
     document.querySelectorAll('.vocational-group-input:not(#groupAll)').forEach(input => {
       input.checked = false;
+      input.nextElementSibling.classList.remove('pulse-animation');
     });
   } 
   // If a specific option is checked, uncheck "All" option
   else if (checkbox.id !== 'groupAll' && checkbox.checked) {
     allCheckbox.checked = false;
+    allCheckbox.nextElementSibling.classList.remove('pulse-animation');
   }
   
   // If no option is checked, automatically check "All" option
   const anyChecked = Array.from(document.querySelectorAll('.vocational-group-input:not(#groupAll)')).some(input => input.checked);
   if (!anyChecked) {
     allCheckbox.checked = true;
-    
-    // Add emphasis effect to "All" when automatically selected
-    const allCard = allCheckbox.nextElementSibling;
-    allCard.style.animation = 'pulse 0.5s ease-out';
+    allCheckbox.nextElementSibling.classList.add('pulse-animation');
     setTimeout(() => {
-      allCard.style.animation = '';
+      allCheckbox.nextElementSibling.classList.remove('pulse-animation');
     }, 500);
-  }
-  
-  // Add temporary styles to emphasize the selection
-  if (checkbox.checked) {
-    const icon = cardInner.querySelector('.vocational-group-icon');
-    icon.style.animation = 'popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-    setTimeout(() => {
-      icon.style.animation = '';
-    }, 400);
   }
 }
 
@@ -756,6 +709,16 @@ document.getElementById('currentYear').textContent = new Date().getFullYear();
 function displayResults(data) {
   const { totalPoints, totalCredits, eligibleSchools } = data;
 
+  // Get selected region and show proper region name
+  const selectedRegionValue = document.querySelector('input[name="analysisArea"]:checked')?.value || '';
+  const regionNames = {
+    'taoyuan': '桃聯區',
+    'kaohsiung': '高雄區',
+    'central': '中投區',
+    'changhua': '彰化區'
+  };
+  const selectedRegionName = regionNames[selectedRegionValue] || '未指定區域';
+
   let results = `
     <div class="results-container">
       <div class="results-header">
@@ -777,6 +740,11 @@ function displayResults(data) {
             <i class="fas fa-school icon"></i>
             <div class="result-value">${eligibleSchools ? eligibleSchools.length : 0}</div>
             <div class="result-label">符合條件學校數</div>
+          </div>
+          <div class="result-card analysis-region">
+            <i class="fas fa-map-marker-alt icon"></i>
+            <div class="result-value">${selectedRegionName}</div>
+            <div class="result-label">分析區域</div>
           </div>
         </div>
       </div>
@@ -944,6 +912,17 @@ function showExportOptions() {
   requestAnimationFrame(() => {
     exportMenu.classList.add('show');
   });
+}
+
+function closeExportMenu() {
+  const exportMenu = document.querySelector('.export-menu');
+  if (exportMenu) {
+    exportMenu.classList.remove('show');
+    
+    setTimeout(() => {
+      exportMenu.remove();
+    }, 300);
+  }
 }
 
 async function exportResults(format = 'txt') {
@@ -1618,7 +1597,7 @@ function applyExcelStyling(worksheet, range) {
       
       if (R !== 0 || C !== 0) { // Skip title cell as we styled it already
         // Base style for all cells
-        worksheet[cell].s = {
+        worksheet[cell].s = { 
           font: { name: "Arial", sz: 11 },
           alignment: { vertical: "center", wrapText: true },
           border: {
@@ -1714,14 +1693,6 @@ function applyExcelStyling(worksheet, range) {
         if (!worksheet[cell].s.border.right) worksheet[cell].s.border.right = borderStyle;
       }
     }
-  }
-}
-
-function closeExportMenu() {
-  const exportMenu = document.querySelector('.export-menu');
-  if (exportMenu) {
-    exportMenu.classList.remove('show');
-    setTimeout(() => exportMenu.remove(), 300);
   }
 }
 
@@ -1971,14 +1942,70 @@ async function loadScript(url) {
 document.addEventListener('DOMContentLoaded', function() {
   initVocationalGroupValidation();
   initRating();
-  
-  // Add keyframe for ripple effect
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes rippleEffect {
-      0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-      100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
 });
+
+function exportJson(resultsText) {
+  // Create a structured JSON object from the analysis data
+  const now = new Date();
+  const dateTime = now.toLocaleString('zh-TW');
+  
+  // Get detailed results data
+  const totalPoints = document.querySelector('.total-points .result-value')?.textContent || "";
+  const totalCredits = document.querySelector('.total-credits .result-value')?.textContent || "";
+  
+  // Get scores
+  const scores = {
+    chinese: document.getElementById('chinese').value,
+    english: document.getElementById('english').value,
+    math: document.getElementById('math').value,
+    science: document.getElementById('science').value,
+    social: document.getElementById('social').value,
+    composition: document.getElementById('composition').value
+  };
+  
+  // Get schools
+  const schools = Array.from(document.querySelectorAll('.school-item')).map(school => {
+    return {
+      name: school.querySelector('.school-name')?.textContent.trim() || "",
+      type: getSchoolParentType(school),
+      ownership: getSchoolOwnership(school),
+      group: school.querySelector('.school-group')?.textContent.trim() || "",
+      cutoffScore: school.querySelector('.cutoff-score')?.textContent.trim() || ""
+    };
+  });
+  
+  // Organize schools by type
+  const schoolsByType = {};
+  schools.forEach(school => {
+    if (!schoolsByType[school.type]) {
+      schoolsByType[school.type] = [];
+    }
+    schoolsByType[school.type].push(school);
+  });
+  
+  // Create final JSON object
+  const jsonData = {
+    timestamp: dateTime,
+    analysis: {
+      totalPoints: totalPoints,
+      totalCredits: totalCredits,
+      scores: scores
+    },
+    results: {
+      totalEligibleSchools: schools.length,
+      schoolsByType: schoolsByType
+    },
+    metadata: {
+      version: "1.0",
+      generator: "會考落點分析系統",
+      url: "https://tyctw.github.io/spare/"
+    }
+  };
+  
+  // Convert to formatted JSON string
+  const jsonString = JSON.stringify(jsonData, null, 2);
+  
+  // Download as file
+  const blob = new Blob([jsonString], { type: 'application/json;charset=utf-8' });
+  downloadFile(blob, '會考落點分析結果.json');
+}
