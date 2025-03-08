@@ -22,14 +22,126 @@ const vocationalGroups = {
 function toggleVocationalGroup() {
   const schoolType = document.getElementById('schoolType').value;
   const vocationalGroupContainer = document.getElementById('vocationalGroupContainer');
-  const vocationalGroup = document.getElementById('vocationalGroup');
-
+  
   if (schoolType === '職業類科') {
     vocationalGroupContainer.style.display = 'block';
+    // Add small delay before adding visible class for smooth animation
+    setTimeout(() => {
+      vocationalGroupContainer.classList.add('visible');
+      
+      // Create staggered animation for cards
+      const cards = document.querySelectorAll('.vocational-group-card');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          
+          requestAnimationFrame(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          });
+        }, index * 50); // Stagger each card by 50ms
+      });
+    }, 10);
   } else {
-    vocationalGroupContainer.style.display = 'none';
-    vocationalGroup.value = 'all';
+    vocationalGroupContainer.classList.remove('visible');
+    // Hide after animation completes
+    setTimeout(() => {
+      vocationalGroupContainer.style.display = 'none';
+      // Uncheck all checkboxes when hiding
+      document.querySelectorAll('.vocational-group-input').forEach(input => {
+        input.checked = false;
+      });
+      // Ensure "All" option is checked by default
+      document.getElementById('groupAll').checked = true;
+    }, 300);
   }
+}
+
+function getSelectedVocationalGroups() {
+  const selected = [];
+  document.querySelectorAll('.vocational-group-input:checked').forEach(input => {
+    selected.push(input.value);
+  });
+  return selected.length > 0 ? selected : ['all'];
+}
+
+// Add vocational group validation with enhanced feedback
+function handleVocationalGroupSelection(event) {
+  const checkbox = event.target;
+  const allCheckbox = document.getElementById('groupAll');
+  const cardInner = checkbox.nextElementSibling;
+  
+  // Add visual feedback with animation
+  if (checkbox.checked) {
+    // Create ripple effect on the card
+    const ripple = document.createElement('span');
+    ripple.className = 'selection-ripple';
+    ripple.style.cssText = `
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(42, 157, 143, 0.3) 0%, transparent 70%);
+      border-radius: 10px;
+      opacity: 1;
+      pointer-events: none;
+      animation: rippleEffect 0.6s ease-out forwards;
+    `;
+    
+    if (checkbox.id === 'groupAll') {
+      ripple.style.background = 'radial-gradient(circle, rgba(233, 196, 106, 0.3) 0%, transparent 70%)';
+    }
+    
+    cardInner.appendChild(ripple);
+    
+    setTimeout(() => {
+      ripple.remove();
+    }, 600);
+  }
+  
+  // If "All" option is checked, uncheck all other options
+  if (checkbox.id === 'groupAll' && checkbox.checked) {
+    document.querySelectorAll('.vocational-group-input:not(#groupAll)').forEach(input => {
+      input.checked = false;
+    });
+  } 
+  // If a specific option is checked, uncheck "All" option
+  else if (checkbox.id !== 'groupAll' && checkbox.checked) {
+    allCheckbox.checked = false;
+  }
+  
+  // If no option is checked, automatically check "All" option
+  const anyChecked = Array.from(document.querySelectorAll('.vocational-group-input:not(#groupAll)')).some(input => input.checked);
+  if (!anyChecked) {
+    allCheckbox.checked = true;
+    
+    // Add emphasis effect to "All" when automatically selected
+    const allCard = allCheckbox.nextElementSibling;
+    allCard.style.animation = 'pulse 0.5s ease-out';
+    setTimeout(() => {
+      allCard.style.animation = '';
+    }, 500);
+  }
+  
+  // Add temporary styles to emphasize the selection
+  if (checkbox.checked) {
+    const icon = cardInner.querySelector('.vocational-group-icon');
+    icon.style.animation = 'popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    setTimeout(() => {
+      icon.style.animation = '';
+    }, 400);
+  }
+}
+
+// Apply event listeners to vocational group checkboxes
+function initVocationalGroupValidation() {
+  document.querySelectorAll('.vocational-group-input').forEach(checkbox => {
+    checkbox.addEventListener('change', handleVocationalGroupSelection);
+  });
 }
 
 function toggleInstructions() {
@@ -309,7 +421,7 @@ async function analyzeScores() {
 
     const schoolOwnership = document.getElementById('schoolOwnership').value;
     const schoolType = document.getElementById('schoolType').value;
-    const vocationalGroup = document.getElementById('vocationalGroup').value;
+    const vocationalGroups = getSelectedVocationalGroups();
     const analysisIdentity = document.getElementById('analysisIdentity').value;
     
     // Get selected region from radio buttons
@@ -366,7 +478,7 @@ async function analyzeScores() {
       filters: {
         schoolOwnership,
         schoolType,
-        vocationalGroup,
+        vocationalGroups,
         analysisIdentity
       },
       region: analysisArea
@@ -381,14 +493,14 @@ async function analyzeScores() {
       composition: parseInt(document.getElementById('composition').value)
     };
 
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxQD0ENt4twxvuThmgRZ2dbvjKbt38IjRYMCFuPmNXGxXNWyY7VVOGH_vZZFBHlZOaV/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbwyCrdfpk5Lmw-ifJR4E_hkMiolZx4LitVt14gIP5CDeiZYSWjhEtD4K1hW6BFYkQIqsA/exec', {
       method: 'POST',
       body: JSON.stringify({
         scores,
         filters: {
           schoolOwnership,
           schoolType,
-          vocationalGroup,
+          vocationalGroups,
           analysisIdentity
         },
         region: analysisArea
@@ -739,6 +851,12 @@ function displayResults(data) {
                       ${school.ownership ? `<span class="school-ownership">【${school.ownership}】</span>` : ''}
                     </div>
                     <div class="school-details">
+                      ${school.group ? `
+                        <span class="school-group">
+                          <i class="fas fa-layer-group icon"></i>
+                          ${school.group}
+                        </span>
+                      ` : ''}
                       ${school.lastYearCutoff ? `
                         <span class="cutoff-score">
                           <i class="fas fa-chart-line icon"></i>
@@ -1154,7 +1272,9 @@ function printResults() {
           left: 0;
           width: 100%;
           height: 1px;
-          background: #f0f0f0;
+          background: linear-gradient(90deg, transparent, #ddd, transparent);
+          width: 80%;
+          margin: 30px auto 0;
         }
         .print-section-title {
           font-size: 1.4rem;
@@ -1203,6 +1323,7 @@ function printResults() {
           z-index: -1;
         }
         
+        /* Enhanced print styling for school list */
         .print-school-list {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -1255,7 +1376,10 @@ function printResults() {
         
         .page-break-after::after {
           content: '';
-          display: block;
+          position: absolute;
+          bottom: -15px;
+          left: 0;
+          width: 100%;
           height: 1px;
           background: linear-gradient(90deg, transparent, #ddd, transparent);
           width: 80%;
@@ -1297,6 +1421,7 @@ function printResults() {
       name: school.querySelector('.school-name')?.textContent.trim() || "",
       type: getSchoolParentType(school),
       ownership: getSchoolOwnership(school),
+      group: getSchoolGroup(school),
       cutoff: school.querySelector('.cutoff-score')?.textContent.trim() || ""
     };
   });
@@ -1409,6 +1534,7 @@ function printResults() {
                   </div>
                   <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #666; margin-top: 5px;">
                     <span>${school.ownership}</span>
+                    ${school.group ? `<span><i class="fas fa-layer-group" style="margin-right: 5px;"></i>${school.group}</span>` : ''}
                     <span>${school.cutoff}</span>
                   </div>
                 </div>
@@ -1509,10 +1635,10 @@ function applyExcelStyling(worksheet, range) {
           worksheet[cell].s.fill = { patternType: "solid", fgColor: { rgb: "2A9D8F" } };
           worksheet[cell].s.alignment = { horizontal: "center", vertical: "center" };
           worksheet[cell].s.border = {
-            top: { style: "medium", color: { rgb: "264653" } },
-            bottom: { style: "medium", color: { rgb: "264653" } },
-            left: { style: "medium", color: { rgb: "264653" } },
-            right: { style: "medium", color: { rgb: "264653" } }
+            top: { style: "medium", color: { auto: 1 } },
+            bottom: { style: "medium", color: { auto: 1 } },
+            left: { style: "medium", color: { auto: 1 } },
+            right: { style: "medium", color: { auto: 1 } }
           };
         }
         
@@ -1812,6 +1938,14 @@ function getSchoolOwnership(schoolElement) {
   return "";
 }
 
+function getSchoolGroup(schoolElement) {
+  const groupElem = schoolElement.querySelector('.school-group');
+  if (groupElem) {
+    return groupElem.textContent.trim();
+  }
+  return "";
+}
+
 function downloadFile(blob, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1833,4 +1967,18 @@ async function loadScript(url) {
     document.head.appendChild(script);
   });
 }
-initRating();
+
+document.addEventListener('DOMContentLoaded', function() {
+  initVocationalGroupValidation();
+  initRating();
+  
+  // Add keyframe for ripple effect
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes rippleEffect {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+});
