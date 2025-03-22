@@ -1,703 +1,196 @@
 <html lang="zh-TW">
-  <head>
-    <meta charset="UTF-8" />
-    <title>會考落點分析 | 免費高中落點分析工具</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-adsense-account" content="ca-pub-3350304014189563" />
-    <meta
-      name="description"
-      content="免費會考落點分析系統，幫助您快速分析國中會考成績對應的高中落點，提供精確的學校錄取機率評估及分析報告。提供匯出功能及學校比較工具。"
-    />
-    <meta
-      name="keywords"
-      content="會考落點分析,會考成績分析,高中落點分析,免費落點分析,桃聯區,中投區,高雄區,彰化區,國中會考,高中錄取,學校比較,大學升學,升學分析,國中升高中,會考分數,武陵高中,中壢高中,內壢高中,平鎮高中,大園高中,永豐高中,南崁高中,振聲高中,楊梅高中,治平高中,新興高中,關西高中,大溪高中"
-    />
-    <meta name="author" content="落點分析研究團隊" />
-    <meta property="og:title" content="會考落點分析 | 免費高中落點分析工具" />
-    <meta property="og:description" content="免費會考落點分析系統，幫助您快速分析國中會考成績對應的高中落點，提供精確的學校錄取機率評估及分析報告。" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://tyctw.github.io/spare/" />
-    <meta property="og:image" content="https://tyctw.github.io/spare/og-image.jpg" />
-    <meta property="og:site_name" content="會考落點分析系統" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="會考落點分析 | 免費高中落點分析工具" />
-    <meta name="twitter:description" content="免費會考落點分析系統，幫助您快速分析國中會考成績對應的高中落點，提供精確的學校錄取機率評估及分析報告。" />
-    <meta name="twitter:image" content="https://tyctw.github.io/spare/og-image.jpg" />
-    <meta name="robots" content="index, follow" />
-    <meta name="googlebot" content="index, follow" />
-    <link rel="canonical" href="https://tyctw.github.io/spare/" />
-    <!-- External JS Libraries -->
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  </head>
-  <body>
-    <header class="header">
-      <div class="header-container">
-        <div class="header-logo">
-          <i class="fas fa-chart-line"></i>
-          <span>會考落點分析</span>
-        </div>
-        <div class="header-actions">
-          <button class="header-button" onclick="showInstructions()">
-            <i class="fas fa-info-circle"></i> 使用說明
-          </button>
-          <button class="header-button" onclick="showDisclaimer()">
-            <i class="fas fa-shield-alt"></i> 免責聲明
-          </button>
-        </div>
-        <div class="menu-icon" onclick="toggleMenu()">
-          <i class="fas fa-bars"></i>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025年統測倒數計時器</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="2025年統測倒數計時器，幫助你掌握準備進度，提供專注計時器、待辦事項和科目進度追蹤等功能">
+  <meta name="keywords" content="統測, 統測倒數, 四技二專, 技專校院, 倒數計時器, 2025統測, 專注計時器, 讀書計畫">
+  <meta name="author" content="統測倒數計時器">
+  <meta property="og:title" content="2025年統測倒數計時器">
+  <meta property="og:description" content="隨時掌握統測剩餘時間，科學管理你的讀書計畫">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://你的網站網址.com">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="2025年統測倒數計時器">
+  <meta name="twitter:description" content="隨時掌握統測剩餘時間，科學管理你的讀書計畫">
+  <link rel="canonical" href="https://你的網站網址.com">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="mobile-styles.css">
+  <!-- 添加 Font Awesome 圖標 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="floating-shapes" id="floating-shapes"></div>
+  
+  <button id="menu-toggle" class="menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  
+  <div id="menu-overlay" class="menu-overlay"></div>
+  
+  <header id="site-header" class="site-header">
+    <nav>
+      <a href="https://www.tcte.edu.tw/" target="_blank">最新消息</a>
+      <a href="https://tyctw.github.io/114clock/" target="_blank">會考倒數</a>
+      <a href="https://ceecc.vercel.app/" target="_blank">學測倒數</a>
+      <a href="#" id="dark-mode-toggle">切換主題</a>
+      <a href="#" id="notification-settings-btn">通知設定</a>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <h1>2025年統測倒數</h1>
+    <div class="exam-dates">2025/4/26(六) – 2025/4/27(日)</div>
+    
+    <div class="countdown-container">
+      <div class="countdown-item">
+        <div id="days" class="countdown-value">--</div>
+        <div class="countdown-label">天</div>
       </div>
-    </header>
-
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-    <div class="fullscreen-menu" id="fullscreenMenu">
-      <div class="close-menu" onclick="closeMenu()">
-        <i class="fas fa-times"></i>
+      <div class="countdown-item">
+        <div id="hours" class="countdown-value">--</div>
+        <div class="countdown-label">時</div>
       </div>
-      
-      <div class="menu-category">主要功能</div>
-      <a href="#" onclick="closeMenu(); window.scrollTo(0, 0);">
-        <i class="fas fa-home"></i> 首頁
-      </a>
-      <a href="#" onclick="closeMenu(); showInstructions();">
-        <i class="fas fa-book"></i> 使用說明
-      </a>
-      <a href="#" onclick="closeMenu(); showDisclaimer();">
-        <i class="fas fa-shield-alt"></i> 免責聲明
-      </a>
-      
-      <div class="menu-category">關聯系統</div>
-      <a href="https://sites.google.com/view/tyctw/" target="_blank">
-        <i class="fas fa-school"></i> 回到主網頁
-      </a>
-      <a href="https://tyctw.github.io/sequence/" target="_blank">
-        <i class="fas fa-pencil-alt"></i> 各校序位推估
-      </a>
-      <a href="https://tyctw.github.io/Navigation/">
-        <i class="fas fa-university"></i> 學校導航系統
-      </a>
-      
-      <div class="menu-category">支援與回饋</div>
-      <a href="https://forms.gle/e5tHU1haqpHRU7nJ9" target="_blank">
-        <i class="fas fa-envelope-open-text"></i> 獲取邀請碼
-      </a>
-      <a href="https://tyctw.github.io/report_form" target="_blank">
-        <i class="fas fa-exclamation-triangle"></i> 系統異常回報
-      </a>
-      
-      <div class="menu-footer">
-        <div class="menu-social">
-          <a href="https://www.instagram.com/114.rcpet/" title="Instagram"><i class="fab fa-instagram"></i></a>
-        </div>
-        <div class="menu-version">
-          版本: 2.0 <span id="menuVersionYear">2023</span>
-        </div>
+      <div class="countdown-item">
+        <div id="minutes" class="countdown-value">--</div>
+        <div class="countdown-label">分</div>
+      </div>
+      <div class="countdown-item">
+        <div id="seconds" class="countdown-value">--</div>
+        <div class="countdown-label">秒</div>
       </div>
     </div>
+    
+    <div class="message-container">
+      <div id="message" class="message"></div>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-label">準備進度:</div>
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <div id="progress-percentage" class="progress-percentage">0%</div>
+    </div>
 
-    <div class="container">
-      <h1>
-        <i class="fas fa-chart-line icon"></i>會考落點分析系統
-      </h1>
-      <a
-        href="https://forms.gle/e5tHU1haqpHRU7nJ9"
-        target="_blank"
-        class="invite-link"
-      >
-        <i class="fas fa-envelope-open-text icon"></i>填寫表單獲取邀請碼
-      </a>
-      <button class="instruction-toggle" onclick="showInstructions()">
-        <i class="fas fa-info-circle icon"></i>使用說明
-      </button>
-      <button class="disclaimer-toggle" onclick="showDisclaimer()">
-        <i class="fas fa-exclamation-triangle icon"></i>免責聲明
-      </button>
-      <form id="analysisForm">
-        <div class="form-group">
-          <label for="invitationCode">
-            <i class="fas fa-key icon"></i>邀請碼：
+    <!-- 改為按鈕區域 -->
+    <div class="feature-buttons">
+      <div class="feature-button" id="timer-btn">
+        <i class="fas fa-clock"></i>
+        <span>專注計時器</span>
+      </div>
+      <div class="feature-button" id="todo-btn">
+        <i class="fas fa-tasks"></i>
+        <span>待辦事項</span>
+      </div>
+      <div class="feature-button" id="subject-btn">
+        <i class="fas fa-book"></i>
+        <span>科目進度</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模態窗口覆蓋層 -->
+  <div id="modal-overlay" class="modal-overlay"></div>
+  
+  <!-- 專注計時器模態窗口 -->
+  <div id="timer-modal" class="modal">
+    <div class="modal-header">
+      <h2>專注計時器</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div id="pomodoro-container" class="feature-card">
+      <div class="timer-display">
+        <span id="timer-minutes">25</span>:<span id="timer-seconds">00</span>
+      </div>
+      <div class="timer-controls">
+        <button id="start-timer" class="feature-btn">開始</button>
+        <button id="pause-timer" class="feature-btn" disabled>暫停</button>
+        <button id="reset-timer" class="feature-btn">重設</button>
+      </div>
+      <div class="timer-mode">
+        <button id="pomodoro-btn" class="mode-btn active">專注</button>
+        <button id="short-break-btn" class="mode-btn">短休</button>
+        <button id="long-break-btn" class="mode-btn">長休</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 待辦事項模態窗口 -->
+  <div id="todo-modal" class="modal">
+    <div class="modal-header">
+      <h2>待辦事項</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div id="todo-container" class="feature-card">
+      <div class="todo-input-container">
+        <input type="text" id="todo-input" placeholder="新增待辦事項...">
+        <button id="add-todo" class="feature-btn">新增</button>
+      </div>
+      <ul id="todo-list" class="todo-list"></ul>
+    </div>
+  </div>
+  
+  <!-- 科目進度模態窗口 -->
+  <div id="subject-modal" class="modal">
+    <div class="modal-header">
+      <h2>科目進度</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div id="subject-progress-container" class="feature-card">
+      <div class="subject-list" id="subject-list">
+        <!-- 科目進度會在這裡動態生成 -->
+      </div>
+      <div class="add-subject-container">
+        <input type="text" id="subject-input" placeholder="科目名稱">
+        <button id="add-subject" class="feature-btn">新增科目</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 通知設定模態窗口 -->
+  <div id="notification-modal" class="modal">
+    <div class="modal-header">
+      <h2>通知設定</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div id="notification-section" class="feature-card">
+      <div id="notification-permission-info">
+        此網站需要通知權限才能傳送倒數提醒
+      </div>
+      <div class="notification-container">
+        <div class="notification-row">
+          <div>每日倒數提醒</div>
+          <label class="notification-toggle">
+            <input type="checkbox" id="notification-toggle">
+            <span class="toggle-slider"></span>
           </label>
-          <input
-            type="text"
-            id="invitationCode"
-            required
-            placeholder="請輸入邀請碼"
-          />
         </div>
-
-        <div class="qr-options">
-          <button type="button" id="scanQRCode">
-            <i class="fas fa-camera icon"></i>掃描 QR 碼
-          </button>
-          <label for="fileInput" class="file-input-label">
-            <i class="fas fa-image icon"></i>上傳 QR 碼
-          </label>
-          <input type="file" id="fileInput" accept="image/*" />
+        <div class="notification-row">
+          <div>提醒時間</div>
+          <input type="time" id="notification-time" class="notification-time">
         </div>
-        <div id="qr-reader" style="display: none;"></div>
-        <div id="qr-result"></div>
-      </form>
-
-      <div class="form-group">
-        <label for="schoolOwnership">
-          <i class="fas fa-building icon"></i>學校屬性：
-        </label>
-        <select id="schoolOwnership">
-          <option value="all">全部</option>
-          <option value="public">公立</option>
-          <option value="private">私立</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="schoolType">
-          <i class="fas fa-graduation-cap icon"></i>學校類型：
-        </label>
-        <select id="schoolType" onchange="toggleVocationalGroup()">
-          <option value="all">全部</option>
-          <option value="普通科">普通科</option>
-          <option value="職業類科">職業類科</option>
-        </select>
-      </div>
-      <div class="form-group" id="vocationalGroupContainer" style="display: none;">
-        <label for="vocationalGroup">
-          <i class="fas fa-tools icon"></i>職業群別 (可複選)：
-        </label>
-        <div class="vocational-group-container">
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupAll" class="vocational-group-input" value="all" checked>
-            <label for="groupAll" class="vocational-group-label">
-              <i class="fas fa-check-circle"></i>
-              <span>全部選擇</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupMechanical" class="vocational-group-input" value="機械群">
-            <label for="groupMechanical" class="vocational-group-label">
-              <i class="fas fa-cogs"></i>
-              <span>機械群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupPower" class="vocational-group-input" value="動力機械群">
-            <label for="groupPower" class="vocational-group-label">
-              <i class="fas fa-car"></i>
-              <span>動力機械群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupElectrical" class="vocational-group-input" value="電機與電子群">
-            <label for="groupElectrical" class="vocational-group-label">
-              <i class="fas fa-bolt"></i>
-              <span>電機與電子群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupChemical" class="vocational-group-input" value="化工群">
-            <label for="groupChemical" class="vocational-group-label">
-              <i class="fas fa-flask"></i>
-              <span>化工群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupCivil" class="vocational-group-input" value="土木與建築群">
-            <label for="groupCivil" class="vocational-group-label">
-              <i class="fas fa-building"></i>
-              <span>土木與建築群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupBusiness" class="vocational-group-input" value="商業與管理群">
-            <label for="groupBusiness" class="vocational-group-label">
-              <i class="fas fa-briefcase"></i>
-              <span>商業與管理群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupForeign" class="vocational-group-input" value="外語群">
-            <label for="groupForeign" class="vocational-group-label">
-              <i class="fas fa-language"></i>
-              <span>外語群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupDesign" class="vocational-group-input" value="設計群">
-            <label for="groupDesign" class="vocational-group-label">
-              <i class="fas fa-palette"></i>
-              <span>設計群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupAgriculture" class="vocational-group-input" value="農業群">
-            <label for="groupAgriculture" class="vocational-group-label">
-              <i class="fas fa-leaf"></i>
-              <span>農業群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupFood" class="vocational-group-input" value="食品群">
-            <label for="groupFood" class="vocational-group-label">
-              <i class="fas fa-utensils"></i>
-              <span>食品群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupHomEc" class="vocational-group-input" value="家政群">
-            <label for="groupHomEc" class="vocational-group-label">
-              <i class="fas fa-home"></i>
-              <span>家政群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupHospitality" class="vocational-group-input" value="餐旅群">
-            <label for="groupHospitality" class="vocational-group-label">
-              <i class="fas fa-concierge-bell"></i>
-              <span>餐旅群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupAquaFishery" class="vocational-group-input" value="水產群">
-            <label for="groupAquaFishery" class="vocational-group-label">
-              <i class="fas fa-fish"></i>
-              <span>水產群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupMarine" class="vocational-group-input" value="海事群">
-            <label for="groupMarine" class="vocational-group-label">
-              <i class="fas fa-ship"></i>
-              <span>海事群</span>
-            </label>
-          </div>
-          <div class="vocational-group-option">
-            <input type="checkbox" id="groupArt" class="vocational-group-input" value="藝術群">
-            <label for="groupArt" class="vocational-group-label">
-              <i class="fas fa-paint-brush"></i>
-              <span>藝術群</span>
-            </label>
-          </div>
+        <div class="notification-row">
+          <div>通知狀態</div>
+          <div id="notification-status" class="status-disabled">通知已關閉</div>
         </div>
-        <select id="vocationalGroup" style="display: none;">
-          <option value="all">全部</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>
-          <i class="fas fa-user icon"></i> 分析身份：
-        </label>
-        <div class="identity-selector">
-          <div class="identity-option">
-            <input type="radio" id="identity-student" name="identitySelector" value="student" class="identity-input" onchange="toggleIdentitySelector()">
-            <label for="identity-student" class="identity-label">
-              <i class="fas fa-user-graduate identity-icon"></i>
-              <div class="identity-name">學生</div>
-            </label>
-          </div>
-          <div class="identity-option">
-            <input type="radio" id="identity-teacher" name="identitySelector" value="teacher" class="identity-input" onchange="toggleIdentitySelector()">
-            <label for="identity-teacher" class="identity-label">
-              <i class="fas fa-chalkboard-teacher identity-icon"></i>
-              <div class="identity-name">老師</div>
-            </label>
-          </div>
-          <div class="identity-option">
-            <input type="radio" id="identity-parent" name="identitySelector" value="parent" class="identity-input" onchange="toggleIdentitySelector()">
-            <label for="identity-parent" class="identity-label">
-              <i class="fas fa-user-friends identity-icon"></i>
-              <div class="identity-name">家長</div>
-            </label>
-          </div>
+        <div class="notification-row">
+          <button id="request-permission-btn" class="permission-button">請求通知權限</button>
         </div>
-        <select id="analysisIdentity" style="display: none;">
-          <option value="">請選擇身份</option>
-          <option value="student">學生</option>
-          <option value="teacher">老師</option>
-          <option value="parent">家長</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>
-          <i class="fas fa-map-marker-alt icon"></i> 分析區域：
-        </label>
-        <div class="region-selector">
-          <div class="region-option">
-            <input type="radio" id="region-taoyuan" name="analysisArea" value="taoyuan" class="region-input">
-            <label for="region-taoyuan" class="region-label">
-              <i class="fas fa-city region-icon"></i>
-              <div class="region-text">
-                <div class="region-name">桃聯區</div>
-                <div class="region-description">桃園聯合分發區考生</div>
-              </div>
-            </label>
-          </div>
-          <div class="region-option">
-            <input type="radio" id="region-central" name="analysisArea" value="central" class="region-input">
-            <label for="region-central" class="region-label">
-              <i class="fas fa-mountain region-icon"></i>
-              <div class="region-text">
-                <div class="region-name">中投區</div>
-                <div class="region-description">中投區考生</div>
-              </div>
-            </label>
-          </div>
-          <div class="region-option">
-            <input type="radio" id="region-kaohsiung" name="analysisArea" value="kaohsiung" class="region-input">
-            <label for="region-kaohsiung" class="region-label">
-              <i class="fas fa-ship region-icon"></i>
-              <div class="region-text">
-                <div class="region-name">高雄區</div>
-                <div class="region-description">高雄區考生</div>
-              </div>
-            </label>
-          </div>
-          <div class="region-option">
-            <input type="radio" id="region-changhua" name="analysisArea" value="changhua" class="region-input">
-            <label for="region-changhua" class="region-label">
-              <i class="fas fa-seedling region-icon"></i>
-              <div class="region-text">
-                <div class="region-name">彰化區</div>
-                <div class="region-description">彰化區考生</div>
-              </div>
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="chinese">
-          <i class="fas fa-book icon"></i>國文：
-        </label>
-        <select id="chinese">
-          <option value="">請選擇您的國文會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="english">
-          <i class="fas fa-language icon"></i>英文：
-        </label>
-        <select id="english">
-          <option value="">請選擇您的英文會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="math">
-          <i class="fas fa-calculator icon"></i>數學：
-        </label>
-        <select id="math">
-          <option value="">請選擇您的數學會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="science">
-          <i class="fas fa-flask icon"></i>自然：
-        </label>
-        <select id="science">
-          <option value="">請選擇您的自然會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="social">
-          <i class="fas fa-globe icon"></i>社會：
-        </label>
-        <select id="social">
-          <option value="">請選擇您的社會會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="composition">
-          <i class="fas fa-pen-nib icon"></i>作文：
-        </label>
-        <select id="composition">
-          <option value="">請選擇您的作文會考分數</option>
-          <option value="0">0 級分</option>
-          <option value="1">1 級分</option>
-          <option value="2">2 級分</option>
-          <option value="3">3 級分</option>
-          <option value="4">4 級分</option>
-          <option value="5">5 級分</option>
-          <option value="6">6 級分</option>
-        </select>
-      </div>
-      <button type="button" id="analyzeButton" onclick="analyzeScores()">
-        <i class="fas fa-search icon"></i>分析落點
-      </button>
-      <button id="exportResults" style="display: none;" onclick="exportResults()">
-        <i class="fas fa-file-export icon"></i>匯出結果
-      </button>
-      <div id="results"></div>
-
-      <div id="ratingSection">
-        <h2><i class="fas fa-star icon"></i> 為我們評分</h2>
-        <div id="starsContainer">
-          <span class="star" data-value="1">&#9733;</span>
-          <span class="star" data-value="2">&#9733;</span>
-          <span class="star" data-value="3">&#9733;</span>
-          <span class="star" data-value="4">&#9733;</span>
-          <span class="star" data-value="5">&#9733;</span>
-        </div>
-        <button id="submitRating" class="rating-button">
-          <i class="fas fa-paper-plane icon"></i> 提交評分
-        </button>
-        <div id="ratingMessage" style="display: none; margin-top: 10px;"></div>
-      </div>
-
-      <div class="copyright">
-        &copy; <span id="currentYear"></span> 會考落點分析系統. All rights reserved.
-        <p>本網站由會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
       </div>
     </div>
+  </div>
 
-    <button id="darkModeToggle" class="dark-mode-toggle" aria-label="切換深色模式">
-      <i class="fas fa-moon"></i>
-    </button>
+  <footer class="site-footer">
+    <p> <span id="copyright-year"></span> 2025 統測倒數計時器 | 版權所有</p>
+  </footer>
 
-    <div id="disclaimerModal" class="modal">
-      <div class="modal-content">
-        <button class="close" onclick="closeDisclaimer()">&times;</button>
-        <h2>
-          <i class="fas fa-balance-scale icon"></i> 免責聲明
-        </h2>
-        <a href="https://forms.gle/e5tHU1haqpHRU7nJ9" target="_blank">
-          <i class="fas fa-link icon"></i> 填寫表單獲取邀請碼
-        </a>
-        <p>
-          <i class="fas fa-info-circle icon"></i> 親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因多種因素而有所不同，包括但不限於：
-        </p>
-        <ul>
-          <li>
-            <i class="fas fa-university icon"></i> 各校的招生政策變化
-          </li>
-          <li>
-            <i class="fas fa-users icon"></i> 當年度考生整體表現
-          </li>
-          <li>
-            <i class="fas fa-star icon"></i> 特殊才能或其他加分項目
-          </li>
-          <li>
-            <i class="fas fa-clipboard-list icon"></i> 各校的實際招生名額調整
-          </li>
-        </ul>
-        <p>
-          <i class="fas fa-exclamation-triangle icon"></i> 為了確保您做出最佳的決定，我們強烈建議您：
-        </p>
-        <ul>
-          <li>
-            <i class="fas fa-search icon"></i> 參考多方資訊，不要僅依賴本網站的分析結果
-          </li>
-          <li>
-            <i class="fas fa-comments icon"></i> 諮詢學校輔導老師或升學顧問的專業意見
-          </li>
-          <li>
-            <i class="fas fa-globe icon"></i> 密切關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊
-          </li>
-        </ul>
-        <p>
-          <i class="fas fa-shield-alt icon"></i> 本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。祝您升學順利！
-        </p>
-        <button class="confirm-button" onclick="closeDisclaimer()">
-          <i class="fas fa-check-circle icon"></i> 我已了解並同意
-        </button>
-      </div>
-    </div>
-
-    <div id="instructionsModal" class="modal">
-      <div class="modal-content instructions-modal-content">
-        <button class="close" onclick="closeInstructions()">&times;</button>
-        <h2>
-          <i class="fas fa-book icon"></i>使用說明
-        </h2>
-        
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-key icon"></i>獲取並輸入邀請碼
-          </h3>
-          <div class="highlight">
-            <i class="fas fa-info-circle"></i> 邀請碼每小時更新一次，請確保使用最新的邀請碼。
-          </div>
-          <p>您可以通過以下方式獲取邀請碼：</p>
-          <ul>
-            <li>填寫我們的序位回報表單</li>
-            <li>掃描 QR 碼</li>
-            <li>上傳 QR 碼圖片</li>
-          </ul>
-          <p>將獲得的邀請碼輸入到"邀請碼"欄位中即可開始使用。</p>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-filter icon"></i>選擇學校屬性和類型
-          </h3>
-          <p>根據您的需求，選擇以下篩選條件：</p>
-          <ul>
-            <li>學校屬性：全部、公立或私立</li>
-            <li>學校類型：全部、普通科或職業類科</li>
-            <li>職業群別：選擇特定職業群或全部（僅限職業類科）</li>
-          </ul>
-          <div class="instruction-visual">
-            <i class="fas fa-sitemap icon-large"></i>
-            <div>依照不同屬性和類型篩選可獲得更精確的分析結果</div>
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-user-graduate icon"></i>選擇分析身份與地區
-          </h3>
-          <p>請選擇您的身份和想要分析的區域：</p>
-          <ul>
-            <li><i class="fas fa-user-alt"></i> 分析身份：學生、老師或家長</li>
-            <li><i class="fas fa-map-marker-alt"></i> 分析區域：桃聯區、中投區、高雄區或彰化區</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-info-circle"></i> 不同地區有不同的計分方式，請務必選擇正確的區域。
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-pencil-alt icon"></i>輸入會考成績
-          </h3>
-          <div class="highlight">
-            <i class="fas fa-exclamation-circle"></i> 請確保填寫所有科目的成績，否則無法進行分析。
-          </div>
-          <p>依序選擇各科目的會考等級：</p>
-          <ul>
-            <li><i class="fas fa-book"></i> 國文：A++ 到 C</li>
-            <li><i class="fas fa-language"></i> 英文：A++ 到 C</li>
-            <li><i class="fas fa-calculator"></i> 數學：A++ 到 C</li>
-            <li><i class="fas fa-flask"></i> 自然：A++ 到 C</li>
-            <li><i class="fas fa-globe"></i> 社會：A++ 到 C</li>
-            <li><i class="fas fa-pen-nib"></i> 作文：0 到 6 級分</li>
-          </ul>
-          <div class="instruction-visual">
-            <i class="fas fa-award icon-large"></i>
-            <div>會考成績等級表</div>
-            <div class="grade-table">
-              <div class="grade-row"><span>&#160;&#160;A++&#160;&#160;</span><span>精熟</span><span>頂標</span></div>
-              <div class="grade-row"><span>&#160;&#160;A+&#160;&#160;</span><span>精熟</span><span>前標</span></div>
-              <div class="grade-row"><span>&#160;&#160;A&#160;&#160;</span><span>精熟</span><span>均標</span></div>
-              <div class="grade-row"><span>&#160;&#160;B++&#160;&#160;</span><span>基礎</span><span>後標</span></div>
-              <div class="grade-row"><span>&#160;&#160;B+&#160;&#160;</span><span>基礎</span><span>底標</span></div>
-              <div class="grade-row"><span>&#160;&#160;B&#160;&#160;</span><span>基礎</span><span>基礎</span></div>
-              <div class="grade-row"><span>&#160;&#160;C&#160;&#160;</span><span>待加強</span><span>待加強</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-chart-line icon"></i>分析落點結果
-          </h3>
-          <p>系統會根據您的輸入進行分析並顯示：</p>
-          <ul>
-            <li><i class="fas fa-star"></i> 總積分計算結果</li>
-            <li><i class="fas fa-award"></i> 總積點計算結果</li>
-            <li><i class="fas fa-school"></i> 符合條件的學校列表</li>
-            <li><i class="fas fa-chart-pie"></i> 各類型學校的數量統計</li>
-          </ul>
-          <div class="instruction-visual">
-            <i class="fas fa-search icon-large"></i>
-            <div>系統會自動計算您的總積分，並比對各校最低錄取標準</div>
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-file-export icon"></i>匯出和列印分析結果
-          </h3>
-          <p>您可以將分析結果匯出為多種格式，或直接列印：</p>
-          <ul>
-            <li><i class="fas fa-file-alt"></i> 文字檔 (.txt) - 簡單易讀的純文字格式</li>
-            <li><i class="fas fa-file-pdf"></i> PDF檔 (.pdf) - 適合列印或正式保存</li>
-            <li><i class="fas fa-file-excel"></i> Excel檔 (.xlsx) - 可在電子表格軟體中開啟</li>
-            <li><i class="fas fa-file-code"></i> JSON檔 (.json) - 適合程式開發者使用</li>
-            <li><i class="fas fa-print"></i> 直接列印 - 使用瀏覽器列印功能輸出結果</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-lightbulb"></i> 建議將結果匯出保存或列印，方便日後參考比較。
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-redo icon"></i>重新分析
-          </h3>
-          <p>您可以隨時：</p>
-          <ul>
-            <li><i class="fas fa-sliders-h"></i> 修改篩選條件</li>
-            <li><i class="fas fa-edit"></i> 更新會考成績</li>
-            <li><i class="fas fa-sync"></i> 重新進行分析</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-sync"></i> 系統會即時更新分析結果，讓您掌握不同選擇的可能性。
-          </div>
-          <div class="instruction-visual">
-            <i class="fas fa-check-circle icon-large"></i>
-            <div>分析結果僅供參考，請務必與學校招生簡章核對</div>
-          </div>
-        </div>
-        
-        <button class="confirm-button" onclick="closeInstructions()">
-          <i class="fas fa-check-circle icon"></i> 我已了解
-        </button>
-      </div>
-    </div>
-
-    <script src="script.js"></script>
-    <!-- Google Tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKP55N96DC"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-VKP55N96DC');
-    </script>
-  </body>
+  <script type="module" src="config.js"></script>
+  <script type="module" src="script.js"></script>
+  <script type="module" src="mobile.js"></script>
+  <script type="module" src="notifications.js"></script>
+</body>
 </html>
