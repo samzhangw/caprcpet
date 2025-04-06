@@ -1294,6 +1294,12 @@ function printResults() {
             height: 1px;
             background: #e9c46a;
           }
+          .print-logo {
+            font-size: 3rem;
+            color: #2a9d8f;
+            margin-bottom: 10px;
+            display: block;
+          }
           .print-title {
             font-size: 2.2rem;
             color: #2a9d8f;
@@ -1339,34 +1345,6 @@ function printResults() {
             padding: 10px 15px;
             border-radius: 0 5px 5px 0;
           }
-          .print-score-item {
-            margin-bottom: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-          }
-          .print-score-label {
-            font-weight: bold;
-            color: #666;
-            font-size: 1rem;
-          }
-          .print-score-value {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #2a9d8f;
-            margin-top: 5px;
-          }
-          .print-scores {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin: 20px 0;
-          }
-          .print-school-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-          }
-          
           .print-footer-page {
             font-size: 0.8rem;
             text-align: right;
@@ -1405,29 +1383,72 @@ function printResults() {
           }
           
           /* Enhanced print styling for school list */
-          .school-item {
-            border: 1px solid #ddd;
-            padding: 10px;
+          .print-school-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+          }
+          
+          .print-scores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+          }
+          
+          .print-score-item {
             background: #f9f9f9;
-            margin-bottom: 10px;
+            padding: 10px;
             border-radius: 5px;
             text-align: center;
+            border: 1px solid #eee;
           }
           
-          .school-name {
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-          }
-          
-          .school-details {
-            font-size: 0.9rem;
+          .print-score-label {
+            font-weight: 500;
             color: #666;
+          }
+          
+          .print-score-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2a9d8f;
+            margin-top: 5px;
+          }
+          
+          /* Print watermark on each page */
+          .print-page-watermark {
+            position: fixed;
+            bottom: 5mm;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #999;
+          }
+          
+          /* Gentle page break decorations */
+          .page-break-after {
+            page-break-after: always;
+            position: relative;
+          }
+          
+          .page-break-after::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ddd, transparent);
+            width: 80%;
+            margin: 30px auto 0;
           }
         }
       </style>
     </head>
     <body>
+      <div class="print-decoration"></div>
       <div class="watermark">會考落點分析系統</div>
       
       <div class="print-header">
@@ -1442,6 +1463,29 @@ function printResults() {
       
       <div class="print-section">
         <h2 class="print-section-title"><i class="fas fa-star"></i> 成績總覽</h2>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+          <div style="background: #f4f1de; padding: 15px; border-radius: 10px; width: 30%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <div style="font-size: 0.9rem; color: #666;">總積分</div>
+            <div style="font-size: 2rem; font-weight: bold; color: #2a9d8f;">${totalPoints}</div>
+          </div>
+          
+          ${totalCredits ? `
+          <div style="background: #f4f1de; padding: 15px; border-radius: 10px; width: 30%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <div style="font-size: 0.9rem; color: #666;">總積點</div>
+            <div style="font-size: 2rem; font-weight: bold; color: #2a9d8f;">${totalCredits}</div>
+          </div>
+          ` : ''}
+          
+          <div style="background: #f4f1de; padding: 15px; border-radius: 10px; width: 30%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <div style="font-size: 0.9rem; color: #666;">符合學校數</div>
+            <div style="font-size: 2rem; font-weight: bold; color: #2a9d8f;">${schools.length}</div>
+          </div>
+        </div>
+        
+        <h3 style="margin-top: 25px; color: #264653; font-size: 1.2rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+          <i class="fas fa-graduation-cap"></i> 各科成績
+        </h3>
         
         <div class="print-scores">
           <div class="print-score-item">
@@ -1474,7 +1518,7 @@ function printResults() {
       <div class="page-break-after"></div>
       
       <div class="print-section">
-        <h2 class="print-section-title"><i class="fas fa-university"></i> 符合條件的學校</h2>
+        <h2 class="print-section-title"><i class="fas fa-school"></i> 符合條件的學校</h2>
         
         ${Object.entries(schoolsByType).map(([type, typeSchools]) => `
           <div style="margin-bottom: 30px;">
@@ -1485,12 +1529,15 @@ function printResults() {
             
             <div class="print-school-list">
               ${typeSchools.map(school => `
-                <div class="school-item">
-                  <div class="school-name">${school.name}</div>
-                  <div class="school-details">
-                    ${school.ownership ? `<span>學校屬性：${school.ownership}</span><br>` : ''}
-                    ${school.group ? `<span>學校群別：${school.group}</span><br>` : ''}
-                    ${school.cutoff ? `<span>去年最低錄取：${school.cutoff}</span>` : ''}
+                <div style="border: 1px solid #eee; border-left: 3px solid #2a9d8f; padding: 10px; border-radius: 5px; background: #f9f9f9; margin-bottom: 10px;">
+                  <div style="font-weight: bold; color: #264653; margin-bottom: 5px;">
+                    <i class="fas fa-graduation-cap" style="color: #2a9d8f; margin-right: 5px;"></i>
+                    ${school.name}
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #666; margin-top: 5px;">
+                    <span>${school.ownership}</span>
+                    ${school.group ? `<span><i class="fas fa-layer-group" style="margin-right: 5px;"></i>${school.group}</span>` : ''}
+                    <span>${school.cutoff}</span>
                   </div>
                 </div>
               `).join('')}
@@ -3782,6 +3829,21 @@ function toggleMenu() {
 function closeMenu() {
   var menu = document.getElementById("fullscreenMenu");
   var overlay = document.getElementById("menuOverlay");
+  menu.classList.remove("show");
+  overlay.classList.remove("show");
+}
+
+document.addEventListener('click', function(event) {
+  var menu = document.getElementById("fullscreenMenu");
+  var menuIcon = document.querySelector(".menu-icon");
+  if (menu.classList.contains('show') && !menu.contains(event.target) && !menuIcon.contains(event.target)) {
+    closeMenu();
+  }
+});
+
+function closeMenu() {
+  var menu = document.getElementById("fullscreenMenu");
+  var overlay = document.getElementById("menuOverlay");
   
   // Add a small delay to prevent accidental clicks when menu is closing
   const links = menu.getElementsByTagName('a');
@@ -3798,459 +3860,4 @@ function closeMenu() {
       links[i].style.pointerEvents = 'auto';
     }
   }, 300);
-}
-
-// New function to generate printable A4 instructions
-function printInstructions() {
-  const printWindow = window.open('', '_blank');
-  
-  if (!printWindow) {
-    alert('請允許開啟彈出視窗以啟用列印功能');
-    return;
-  }
-  
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>會考落點分析系統使用說明</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-      <style>
-        @media print {
-          @page {
-            size: A4;
-            margin: 1.5cm;
-          }
-          
-          body {
-            font-family: 'Noto Sans TC', sans-serif;
-            line-height: 1.5;
-            color: #333;
-            margin: 0;
-            padding: 0;
-          }
-          
-          .print-header {
-            text-align: center;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #2a9d8f;
-            position: relative;
-          }
-          
-          .print-header:after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: #e9c46a;
-          }
-          
-          .print-title {
-            font-size: 24pt;
-            color: #2a9d8f;
-            margin-bottom: 10px;
-          }
-          
-          .print-subtitle {
-            font-size: 12pt;
-            color: #666;
-          }
-          
-          .print-section {
-            margin-bottom: 20px;
-            page-break-inside: avoid;
-          }
-          
-          .print-section-title {
-            font-size: 14pt;
-            color: #2a9d8f;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #e9c46a;
-          }
-          
-          .print-instructions {
-            padding-left: 20px;
-          }
-          
-          .print-instruction-item {
-            margin-bottom: 15px;
-          }
-          
-          .print-instruction-title {
-            font-weight: bold;
-            color: #264653;
-            margin-bottom: 5px;
-          }
-          
-          .print-instruction-content {
-            margin-left: 15px;
-          }
-          
-          .print-instruction-content ul {
-            padding-left: 20px;
-            margin: 5px 0;
-          }
-          
-          .print-instruction-content li {
-            margin-bottom: 3px;
-          }
-          
-          .print-highlight {
-            background-color: #f4f1de;
-            padding: 8px;
-            border-left: 3px solid #e9c46a;
-            margin: 10px 0;
-          }
-          
-          .print-footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px solid #ddd;
-            font-size: 10pt;
-            color: #666;
-            position: running(footer);
-          }
-          
-          .print-page-number:before {
-            content: counter(page);
-          }
-          
-          .print-page-count:before {
-            content: counter(pages);
-          }
-          
-          .grade-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 10px 0;
-          }
-          
-          .grade-table td, .grade-table th {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-          }
-          
-          .grade-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-          }
-          
-          .grade-table tr:nth-child(1) {
-            background-color: #e9f4f3;
-            font-weight: bold;
-          }
-          
-          .print-img {
-            display: block;
-            max-width: 90%;
-            margin: 15px auto;
-            border: 1px solid #ddd;
-          }
-          
-          .no-break {
-            page-break-inside: avoid;
-          }
-          
-          .page-break {
-            page-break-after: always;
-          }
-          
-          @page {
-            @bottom-center {
-              content: element(footer);
-            }
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="print-header">
-        <div class="print-title">會考落點分析系統使用說明</div>
-        <div class="print-subtitle">提供學生、教師及家長參考之高中升學輔導工具</div>
-      </div>
-      
-      <div class="print-section">
-        <div class="print-section-title">1. 系統簡介</div>
-        <div class="print-instructions">
-          <div class="print-instruction-item">
-            <div class="print-instruction-content">
-              本系統為免費的會考落點分析工具，專為國中畢業生升學規劃而設計。通過輸入會考成績，系統可以智能分析各科表現，計算總積分及積點，並提供符合條件的高中列表，協助學生及家長做出更明智的升學決策。
-            </div>
-          </div>
-          <div class="print-highlight">
-            <strong>重要提示：</strong>本系統分析結果僅供參考，實際錄取結果可能因各校招生政策、名額變化等因素有所差異，請以各校公告為準。
-          </div>
-        </div>
-      </div>
-      
-      <div class="print-section">
-        <div class="print-section-title">2. 使用流程</div>
-        <div class="print-instructions">
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">步驟一：獲取並輸入邀請碼</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>透過填寫序位回報表單或掃描QR碼獲取邀請碼</li>
-                <li>將獲得的邀請碼輸入到系統的「邀請碼」欄位</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">步驟二：選擇篩選條件</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>學校屬性：全部、公立或私立</li>
-                <li>學校類型：全部、普通科或職業類科</li>
-                <li>職業群別：（若學校類型選擇職業類科，可進一步選擇特定群別）</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">步驟三：選擇分析身份與地區</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>分析身份：學生、教師或家長</li>
-                <li>分析地區：桃聯區、中投區、高雄區或彰化區</li>
-              </ul>
-              <div class="print-highlight">
-                <strong>注意：</strong>不同地區有不同的計分方式，請務必選擇正確的區域。
-              </div>
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">步驟四：輸入會考成績</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>依序輸入國文、英文、數學、自然、社會的會考等級（A++至C）</li>
-                <li>輸入作文的級分（0-6級）</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">步驟五：分析落點</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>點擊「分析落點」按鈕</li>
-                <li>系統將計算總積分、總積點並列出符合條件的高中</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="page-break"></div>
-      
-      <div class="print-section">
-        <div class="print-section-title">3. 會考成績與積分對照表</div>
-        <div class="print-instructions">
-          <div class="print-instruction-item">
-            <div class="print-instruction-content">
-              <table class="grade-table">
-                <tr>
-                  <td>會考等級</td>
-                  <td>成績表現</td>
-                  <td>百分比</td>
-                  <td>積分對照</td>
-                </tr>
-                <tr>
-                  <td>A++</td>
-                  <td>精熟</td>
-                  <td>頂標（前12%）</td>
-                  <td>6分</td>
-                </tr>
-                <tr>
-                  <td>A+</td>
-                  <td>精熟</td>
-                  <td>前標（前25%）</td>
-                  <td>6分</td>
-                </tr>
-                <tr>
-                  <td>A</td>
-                  <td>精熟</td>
-                  <td>均標（前50%）</td>
-                  <td>6分</td>
-                </tr>
-                <tr>
-                  <td>B++</td>
-                  <td>基礎</td>
-                  <td>後標（前75%）</td>
-                  <td>4分</td>
-                </tr>
-                <tr>
-                  <td>B+</td>
-                  <td>基礎</td>
-                  <td>底標（前88%）</td>
-                  <td>4分</td>
-                </tr>
-                <tr>
-                  <td>B</td>
-                  <td>基礎</td>
-                  <td>基礎</td>
-                  <td>4分</td>
-                </tr>
-                <tr>
-                  <td>C</td>
-                  <td>待加強</td>
-                  <td>待加強</td>
-                  <td>2分</td>
-                </tr>
-              </table>
-              <div class="print-highlight">
-                <strong>備註：</strong>不同區域的計分方式可能有所不同，上表是桃聯區的計分方式示例。
-              </div>
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">作文級分說明</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>作文分為0-6級，6級為最高分</li>
-                <li>不同區域的作文計分方式也有所不同：
-                  <ul>
-                    <li>桃聯區：作文0-6級分別對應0, 1, 2, 2, 3, 3, 3分</li>
-                    <li>中投區：作文0-6級分別對應0, 1, 2, 3, 4, 5, 6分</li>
-                    <li>高雄區：作文不計分數</li>
-                    <li>彰化區：會考科目A++至C分別對應9, 8, 7, 6, 5, 4, 3分</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="print-section">
-        <div class="print-section-title">4. 分析結果說明</div>
-        <div class="print-instructions">
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">總積分與總積點</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>總積分：各科積分的總和</li>
-                <li>總積點：除彰化區外的其他區域會額外計算積點</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">學校列表</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>系統會顯示符合您條件的學校清單，並依照學校類型分類</li>
-                <li>每所學校會顯示：學校名稱、學校屬性、科系群組（如適用）</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">匯出與分享功能</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>您可以將分析結果匯出為多種格式：文字檔、PDF檔、Excel檔或JSON檔</li>
-                <li>也可以直接列印分析結果，方便與師長或家人討論</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="page-break"></div>
-      
-      <div class="print-section">
-        <div class="print-section-title">5. 系統特色與注意事項</div>
-        <div class="print-instructions">
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">系統特色</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>即時分析：輸入成績後立即獲得分析結果</li>
-                <li>多區域支援：支援桃聯區、中投區、高雄區、彰化區的計分方式</li>
-                <li>靈活篩選：可依屬性、類型及群別篩選學校</li>
-                <li>深色模式：支援深色/淺色模式切換，保護眼睛</li>
-                <li>匯出功能：提供多種格式匯出分析結果</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">重要注意事項</div>
-            <div class="print-instruction-content">
-              <ul>
-                <li>分析結果僅供參考，實際錄取結果可能因多種因素而有所不同</li>
-                <li>建議參考多方資訊，不要僅依賴本系統的分析結果</li>
-                <li>請諮詢學校輔導老師或升學顧問的專業意見</li>
-                <li>密切關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊</li>
-              </ul>
-              <div class="print-highlight">
-                <strong>重要提醒：</strong>本系統不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="print-section">
-        <div class="print-section-title">6. 常見問題</div>
-        <div class="print-instructions">
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">如何獲取邀請碼？</div>
-            <div class="print-instruction-content">
-              您可以透過填寫序位回報表單或掃描QR碼獲取邀請碼。邀請碼每小時更新一次，請確保使用最新的邀請碼。
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">各區域計分方式有何不同？</div>
-            <div class="print-instruction-content">
-              不同區域（桃聯區、中投區、高雄區、彰化區）的計分方式有所不同，特別是作文的計分和積點的計算方式。系統會根據您選擇的區域自動採用正確的計分方式。
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">如何解讀分析結果？</div>
-            <div class="print-instruction-content">
-              系統會顯示您的總積分、總積點（除彰化區外）和符合條件的高中列表。如果您的總積分達到或超過高中的最低分數要求，且總積點達到或超過高中的最低積點要求（如適用），則該高中將出現在列表中。
-            </div>
-          </div>
-          
-          <div class="print-instruction-item">
-            <div class="print-instruction-title">系統資料多久更新一次？</div>
-            <div class="print-instruction-content">
-              系統會定期更新各校的招生資訊和分數線，以確保分析結果的準確性。建議定期查看系統，獲取最新的分析結果。
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="print-footer">
-        <div>會考落點分析系統 - 使用說明文件 | https://tyctw.github.io/spare/</div>
-        <div>第 <span class="print-page-number"></span> 頁，共 <span class="print-page-count"></span> 頁</div>
-        <div>&copy; ${new Date().getFullYear()} 會考落點分析系統. 版權所有.</div>
-      </div>
-      
-      <script>
-        window.onload = function() {
-          window.print();
-          setTimeout(() => {
-            window.close();
-          }, 1000);
-        }
-      </script>
-    </body>
-  </html>
-  `);
-  
-  printWindow.document.close();
 }
