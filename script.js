@@ -122,18 +122,21 @@ function changeInstructionPanel(panelNumber) {
   });
   document.querySelector(`.indicator-dot[data-dot="${panelNumber}"]`).classList.add('active');
   
-  // 在手機版中，滾動到頂部，以確保用戶可以看到新內容
+  // On mobile, scroll content to top and ensure buttons remain visible
   if (window.innerWidth <= 768) {
-    const instructionsContent = document.querySelector('.instructions-content');
-    if (instructionsContent) {
-      instructionsContent.scrollTop = 0;
+    const contentEl = activePanel.querySelector('.instruction-panel-content');
+    if (contentEl) {
+      contentEl.scrollTop = 0;
     }
     
-    // 確保內容區域也顯示
-    const panelContent = activePanel.querySelector('.instruction-panel-content');
-    if (panelContent) {
-      panelContent.style.opacity = '1';
-    }
+    // Flash navigation buttons to draw attention
+    const navButtons = document.querySelectorAll('.nav-btn');
+    navButtons.forEach(btn => {
+      btn.classList.add('flash-highlight');
+      setTimeout(() => {
+        btn.classList.remove('flash-highlight');
+      }, 500);
+    });
   }
 }
 
@@ -157,6 +160,14 @@ function showInstructions() {
   if (window.innerWidth <= 768) {
     document.body.style.overflow = 'hidden'; // 防止背景滾動
     modal.style.overflowY = 'auto';
+    
+    // Create a temporary nav helper tip that appears after a delay
+    setTimeout(() => {
+      const helperTip = modal.querySelector('.nav-helper-tip');
+      if (helperTip) {
+        helperTip.style.opacity = '1';
+      }
+    }, 1500);
   }
   
   // Initialize instruction steps
