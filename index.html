@@ -369,6 +369,9 @@
               <div class="region-text">
                 <div class="region-name">桃聯區</div>
                 <div class="region-description">桃園聯合分發區考生</div>
+                <div class="region-features">
+                  <span class="region-feature"><i class="fas fa-school"></i> 40+ 高中</span>
+                </div>
               </div>
             </label>
           </div>
@@ -381,6 +384,9 @@
               <div class="region-text">
                 <div class="region-name">中投區</div>
                 <div class="region-description">中投區考生</div>
+                <div class="region-features">
+                  <span class="region-feature"><i class="fas fa-school"></i> 30+ 高中</span>
+                </div>
               </div>
             </label>
           </div>
@@ -393,6 +399,9 @@
               <div class="region-text">
                 <div class="region-name">高雄區</div>
                 <div class="region-description">高雄區考生</div>
+                <div class="region-features">
+                  <span class="region-feature"><i class="fas fa-school"></i> 35+ 高中</span>
+                </div>
               </div>
             </label>
           </div>
@@ -405,6 +414,9 @@
               <div class="region-text">
                 <div class="region-name">彰化區</div>
                 <div class="region-description">彰化區考生</div>
+                <div class="region-features">
+                  <span class="region-feature"><i class="fas fa-school"></i> 20+ 高中</span>
+                </div>
               </div>
             </label>
           </div>
@@ -585,489 +597,138 @@
     <div id="instructionsModal" class="modal">
       <div class="modal-content instructions-modal-content">
         <button class="close hover-glow" onclick="closeInstructions()">&times;</button>
-        <div class="mobile-close-fab" onclick="closeInstructions()">
-          <i class="fas fa-times"></i>
-        </div>
         <h2>
-          <i class="fas fa-book icon"></i>會考落點分析使用指南
+          <i class="fas fa-book icon"></i>使用說明
         </h2>
         
-        <div class="instructions-nav">
-          <div class="instruction-step active" data-step="1">
-            <div class="step-number">1</div>
-            <div class="step-text">開始使用</div>
+        <div class="instruction-item slide-in" style="animation-delay: 0.2s;">
+          <h3>
+            <i class="fas fa-key icon"></i>獲取並輸入邀請碼
+          </h3>
+          <div class="highlight">
+            <i class="fas fa-info-circle"></i> 邀請碼每小時更新一次，請確保使用最新的邀請碼。
           </div>
-          <div class="instruction-step" data-step="2">
-            <div class="step-number">2</div>
-            <div class="step-text">輸入資料</div>
-          </div>
-          <div class="instruction-step" data-step="3">
-            <div class="step-number">3</div>
-            <div class="step-text">分析結果</div>
-          </div>
-          <div class="instruction-step" data-step="4">
-            <div class="step-number">4</div>
-            <div class="step-text">進階功能</div>
-          </div>
-          <div class="instruction-step" data-step="5">
-            <div class="step-number">5</div>
-            <div class="step-text">常見問題</div>
+          <p>您可以通過以下方式獲取邀請碼：</p>
+          <ul>
+            <li>填寫我們的序位回報表單</li>
+            <li>掃描 QR 碼</li>
+            <li>上傳 QR 碼圖片</li>
+          </ul>
+          <p>將獲得的邀請碼輸入到"邀請碼"欄位中即可開始使用。</p>
+        </div>
+
+        <div class="instruction-item slide-in" style="animation-delay: 0.3s;">
+          <h3>
+            <i class="fas fa-filter icon"></i>選擇學校屬性和類型
+          </h3>
+          <p>根據您的需求，選擇以下篩選條件：</p>
+          <ul>
+            <li>學校屬性：全部、公立或私立</li>
+            <li>學校類型：全部、普通科或職業類科</li>
+            <li>職業群別：選擇特定職業群或全部（僅限職業類科）</li>
+          </ul>
+          <div class="instruction-visual">
+            <i class="fas fa-sitemap icon-large"></i>
+            <div>依照不同屬性和類型篩選可獲得更精確的分析結果</div>
           </div>
         </div>
-        
-        <div class="instruction-content-wrapper">
-          <!-- 步驟 1：開始使用 -->
-          <div class="instruction-content active" data-step="1">
-            <div class="instruction-item slide-in" style="animation-delay: 0.2s;">
-              <h3>
-                <i class="fas fa-rocket icon"></i>歡迎使用會考落點分析工具
-              </h3>
-              <div class="instruction-banner">
-                <div class="banner-icon"><i class="fas fa-graduation-cap"></i></div>
-                <div class="banner-text">本工具可協助您根據會考成績，分析適合的高中落點選擇</div>
-              </div>
-              <p>使用本工具的基本流程：</p>
-              <div class="process-steps">
-                <div class="process-step">
-                  <div class="process-icon"><i class="fas fa-key"></i></div>
-                  <div class="process-text">取得邀請碼</div>
-                </div>
-                <div class="process-arrow"><i class="fas fa-chevron-right"></i></div>
-                <div class="process-step">
-                  <div class="process-icon"><i class="fas fa-user-graduate"></i></div>
-                  <div class="process-text">輸入會考成績</div>
-                </div>
-                <div class="process-arrow"><i class="fas fa-chevron-right"></i></div>
-                <div class="process-step">
-                  <div class="process-icon"><i class="fas fa-search"></i></div>
-                  <div class="process-text">查看分析結果</div>
-                </div>
-                <div class="process-arrow"><i class="fas fa-chevron-right"></i></div>
-                <div class="process-step">
-                  <div class="process-icon"><i class="fas fa-file-export"></i></div>
-                  <div class="process-text">匯出或分享</div>
-                </div>
-              </div>
-              
-              <h3 class="mt-20">
-                <i class="fas fa-key icon"></i>獲取並輸入邀請碼
-              </h3>
-              <div class="highlight important">
-                <i class="fas fa-info-circle"></i> 邀請碼每小時更新一次，請確保使用最新的邀請碼。
-              </div>
-              <div class="two-column-layout">
-                <div class="column">
-                  <p>您可以通過以下方式獲取邀請碼：</p>
-                  <ul>
-                    <li><i class="fas fa-file-alt"></i> 填寫我們的序位回報表單</li>
-                    <li><i class="fas fa-qrcode"></i> 掃描邀請 QR 碼</li>
-                    <li><i class="fas fa-image"></i> 上傳 QR 碼圖片</li>
-                  </ul>
-                </div>
-                <div class="column centered">
-                  <div class="instruction-illustration">
-                    <img src="https://via.placeholder.com/200x150?text=邀請碼示例" alt="邀請碼示例" class="responsive-img">
-                  </div>
-                </div>
-              </div>
-              <div class="instruction-tips">
-                <div class="tip-icon"><i class="fas fa-lightbulb"></i></div>
-                <div class="tip-content">
-                  <strong>小提示：</strong>建議使用 Google Chrome 或 Microsoft Edge 瀏覽器，以獲得最佳使用體驗。
-                </div>
-              </div>
-            </div>
+
+        <div class="instruction-item slide-in" style="animation-delay: 0.4s;">
+          <h3>
+            <i class="fas fa-user-graduate icon"></i>選擇分析身份與地區
+          </h3>
+          <p>請選擇您的身份和想要分析的區域：</p>
+          <ul>
+            <li><i class="fas fa-user-alt"></i> 分析身份：學生、老師或家長</li>
+            <li><i class="fas fa-map-marker-alt"></i> 分析區域：桃聯區、中投區、高雄區或彰化區</li>
+          </ul>
+          <div class="highlight">
+            <i class="fas fa-info-circle"></i> 不同地區有不同的計分方式，請務必選擇正確的區域。
           </div>
-          
-          <!-- 步驟 2：輸入資料 -->
-          <div class="instruction-content" data-step="2">
-            <div class="instruction-item slide-in" style="animation-delay: 0.2s;">
-              <h3>
-                <i class="fas fa-user-graduate icon"></i>選擇分析身份與地區
-              </h3>
-              <div class="two-column-layout">
-                <div class="column">
-                  <p>請選擇您的身份和想要分析的區域：</p>
-                  <ul class="checkmark-list">
-                    <li><i class="fas fa-user-alt"></i> <strong>分析身份</strong>：學生、老師或家長</li>
-                    <li><i class="fas fa-map-marker-alt"></i> <strong>分析區域</strong>：桃聯區、中投區、高雄區或彰化區</li>
-                  </ul>
-                  <div class="highlight warning">
-                    <i class="fas fa-exclamation-triangle"></i> 不同地區有不同的計分方式，請務必選擇正確的區域。
-                  </div>
-                </div>
-                <div class="column centered">
-                  <div class="instruction-illustration">
-                    <img src="https://via.placeholder.com/200x150?text=身份與地區選擇" alt="身份與地區選擇" class="responsive-img">
-                  </div>
-                </div>
-              </div>
-              
-              <h3 class="mt-20">
-                <i class="fas fa-filter icon"></i>選擇學校屬性和類型
-              </h3>
-              <div class="school-options-grid">
-                <div class="school-option">
-                  <div class="option-icon"><i class="fas fa-building"></i></div>
-                  <div class="option-title">學校屬性</div>
-                  <div class="option-items">
-                    <span class="option-item">全部</span>
-                    <span class="option-item">公立</span>
-                    <span class="option-item">私立</span>
-                  </div>
-                </div>
-                <div class="school-option">
-                  <div class="option-icon"><i class="fas fa-school"></i></div>
-                  <div class="option-title">學校類型</div>
-                  <div class="option-items">
-                    <span class="option-item">全部</span>
-                    <span class="option-item">普通科</span>
-                    <span class="option-item">職業類科</span>
-                  </div>
-                </div>
-                <div class="school-option">
-                  <div class="option-icon"><i class="fas fa-briefcase"></i></div>
-                  <div class="option-title">職業群別</div>
-                  <div class="option-items">
-                    <span class="option-item">依需求選擇</span>
-                    <span class="option-item">可多選</span>
-                  </div>
-                </div>
-              </div>
-              
-              <h3 class="mt-20">
-                <i class="fas fa-pencil-alt icon"></i>輸入會考成績
-              </h3>
-              <div class="highlight important">
-                <i class="fas fa-exclamation-circle"></i> 請確保填寫所有科目的成績，否則無法進行分析。
-              </div>
-              <div class="two-column-layout">
-                <div class="column">
-                  <p>依序選擇各科目的會考等級：</p>
-                  <div class="subject-grid">
-                    <div class="subject-item">
-                      <div class="subject-icon"><i class="fas fa-book"></i></div>
-                      <div class="subject-name">國文</div>
-                    </div>
-                    <div class="subject-item">
-                      <div class="subject-icon"><i class="fas fa-language"></i></div>
-                      <div class="subject-name">英文</div>
-                    </div>
-                    <div class="subject-item">
-                      <div class="subject-icon"><i class="fas fa-calculator"></i></div>
-                      <div class="subject-name">數學</div>
-                    </div>
-                    <div class="subject-item">
-                      <div class="subject-icon"><i class="fas fa-flask"></i></div>
-                      <div class="subject-name">自然</div>
-                    </div>
-                    <div class="subject-item">
-                      <div class="subject-icon"><i class="fas fa-globe"></i></div>
-                      <div class="subject-name">社會</div>
-                    </div>
-                    <div class="subject-item">
-                      <div class="subject-icon"><i class="fas fa-pen-nib"></i></div>
-                      <div class="subject-name">作文</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <div class="instruction-illustration">
-                    <div class="grade-table-card">
-                      <div class="card-header">會考成績等級對照表</div>
-                      <div class="grade-table">
-                        <div class="grade-row header"><span>等級</span><span>表現</span><span>程度</span></div>
-                        <div class="grade-row excellent"><span>A++</span><span>精熟</span><span>頂標</span></div>
-                        <div class="grade-row excellent"><span>A+</span><span>精熟</span><span>前標</span></div>
-                        <div class="grade-row good"><span>A</span><span>精熟</span><span>均標</span></div>
-                        <div class="grade-row average"><span>B++</span><span>基礎</span><span>後標</span></div>
-                        <div class="grade-row average"><span>B+</span><span>基礎</span><span>底標</span></div>
-                        <div class="grade-row below-average"><span>B</span><span>基礎</span><span>基礎</span></div>
-                        <div class="grade-row poor"><span>C</span><span>待加強</span><span>待加強</span></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        </div>
+
+        <div class="instruction-item slide-in" style="animation-delay: 0.5s;">
+          <h3>
+            <i class="fas fa-pencil-alt icon"></i>輸入會考成績
+          </h3>
+          <div class="highlight">
+            <i class="fas fa-exclamation-circle"></i> 請確保填寫所有科目的成績，否則無法進行分析。
           </div>
-          
-          <!-- 步驟 3：分析結果 -->
-          <div class="instruction-content" data-step="3">
-            <div class="instruction-item slide-in" style="animation-delay: 0.2s;">
-              <h3>
-                <i class="fas fa-chart-line icon"></i>解讀分析結果
-              </h3>
-              <div class="instruction-banner">
-                <div class="banner-icon"><i class="fas fa-search"></i></div>
-                <div class="banner-text">系統會自動計算您的總積分，並比對各校最低錄取標準</div>
-              </div>
-              
-              <div class="result-explanation">
-                <div class="result-section">
-                  <div class="result-icon"><i class="fas fa-calculator"></i></div>
-                  <div class="result-content">
-                    <h4>積分計算</h4>
-                    <p>系統根據您選擇的地區，採用不同的積分計算方式：</p>
-                    <ul>
-                      <li>桃聯區：五標成績 + 作文分數</li>
-                      <li>中投區：各科加權分數 + 加分項目</li>
-                      <li>高雄區：五標積分 + 作文加權</li>
-                      <li>彰化區：精熟能力積分 + 基礎能力積分</li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div class="result-section">
-                  <div class="result-icon"><i class="fas fa-school"></i></div>
-                  <div class="result-content">
-                    <h4>學校推薦</h4>
-                    <p>分析結果將顯示：</p>
-                    <ul>
-                      <li>符合您成績的學校列表</li>
-                      <li>各校最低錄取標準比較</li>
-                      <li>不同類型學校的數量統計</li>
-                      <li>建議志願序排列</li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div class="result-section">
-                  <div class="result-icon"><i class="fas fa-chart-pie"></i></div>
-                  <div class="result-content">
-                    <h4>圖表分析</h4>
-                    <p>視覺化展示您的：</p>
-                    <ul>
-                      <li>各科能力分布</li>
-                      <li>與各校錄取標準對比</li>
-                      <li>不同學校類型的比例</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="instruction-illustration centered mt-20">
-                <img src="https://via.placeholder.com/500x200?text=分析結果示例" alt="分析結果示例" class="responsive-img">
-              </div>
-              
-              <div class="instruction-tips">
-                <div class="tip-icon"><i class="fas fa-lightbulb"></i></div>
-                <div class="tip-content">
-                  <strong>小提示：</strong>建議保存多次不同的分析結果，方便您進行更全面的決策比較。
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- 步驟 4：進階功能 -->
-          <div class="instruction-content" data-step="4">
-            <div class="instruction-item slide-in" style="animation-delay: 0.2s;">
-              <h3>
-                <i class="fas fa-tools icon"></i>進階功能指南
-              </h3>
-              
-              <div class="feature-grid">
-                <div class="feature-card">
-                  <div class="feature-icon"><i class="fas fa-file-export"></i></div>
-                  <div class="feature-title">匯出結果</div>
-                  <div class="feature-description">
-                    <p>將分析結果匯出為多種格式：</p>
-                    <ul>
-                      <li>PDF文件</li>
-                      <li>Excel表格</li>
-                      <li>文字檔案</li>
-                      <li>JSON數據</li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div class="feature-card">
-                  <div class="feature-icon"><i class="fas fa-print"></i></div>
-                  <div class="feature-title">列印功能</div>
-                  <div class="feature-description">
-                    <p>一鍵列印分析報告，包含：</p>
-                    <ul>
-                      <li>個人成績摘要</li>
-                      <li>推薦學校列表</li>
-                      <li>數據圖表</li>
-                      <li>建議志願序</li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div class="feature-card">
-                  <div class="feature-icon"><i class="fas fa-exchange-alt"></i></div>
-                  <div class="feature-title">學校比較</div>
-                  <div class="feature-description">
-                    <p>多校對比功能：</p>
-                    <ul>
-                      <li>錄取標準比較</li>
-                      <li>科系特色對比</li>
-                      <li>地理位置比較</li>
-                      <li>歷年資料趨勢</li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div class="feature-card">
-                  <div class="feature-icon"><i class="fas fa-share-alt"></i></div>
-                  <div class="feature-title">分享功能</div>
-                  <div class="feature-description">
-                    <p>分享您的分析結果：</p>
-                    <ul>
-                      <li>產生分享連結</li>
-                      <li>直接分享至社交媒體</li>
-                      <li>通過Email分享</li>
-                      <li>生成QR碼分享</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              
-              <h3 class="mt-20">
-                <i class="fas fa-lightbulb icon"></i>專業建議
-              </h3>
-              <div class="advice-cards">
-                <div class="advice-card">
-                  <div class="advice-icon"><i class="fas fa-balance-scale"></i></div>
-                  <div class="advice-content">
-                    <h4>平衡志願選擇</h4>
-                    <p>建議志願序包含：保底志願、適中志願和理想志願，確保錄取機會。</p>
-                  </div>
-                </div>
-                
-                <div class="advice-card">
-                  <div class="advice-icon"><i class="fas fa-map-marked-alt"></i></div>
-                  <div class="advice-content">
-                    <h4>考慮通勤因素</h4>
-                    <p>選擇學校時，應考慮交通便利性、通勤時間和相關費用。</p>
-                  </div>
-                </div>
-                
-                <div class="advice-card">
-                  <div class="advice-icon"><i class="fas fa-star"></i></div>
-                  <div class="advice-content">
-                    <h4>特色與興趣</h4>
-                    <p>除了分數外，也要考慮學校特色、教學風格是否符合個人興趣。</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- 步驟 5：常見問題 -->
-          <div class="instruction-content" data-step="5">
-            <div class="instruction-item slide-in" style="animation-delay: 0.2s;">
-              <h3>
-                <i class="fas fa-question-circle icon"></i>常見問題解答 (FAQ)
-              </h3>
-              
-              <div class="faq-container">
-                <div class="faq-item">
-                  <div class="faq-question">
-                    <i class="fas fa-question"></i>
-                    <span>分析結果的準確性如何？</span>
-                    <i class="fas fa-chevron-down toggle-icon"></i>
-                  </div>
-                  <div class="faq-answer">
-                    <p>本工具基於歷年的錄取數據和最新的招生政策進行分析，提供較為準確的參考。但實際錄取結果可能受到當年度考生整體表現、招生名額調整等因素影響，建議將分析結果作為參考，並結合學校官方資訊做最終決定。</p>
-                  </div>
-                </div>
-                
-                <div class="faq-item">
-                  <div class="faq-question">
-                    <i class="fas fa-question"></i>
-                    <span>如何獲取邀請碼？</span>
-                    <i class="fas fa-chevron-down toggle-icon"></i>
-                  </div>
-                  <div class="faq-answer">
-                    <p>您可以通過填寫我們的序位回報表單、掃描QR碼或上傳QR碼圖片獲取邀請碼。如有困難，可以聯繫我們的客服人員尋求協助。</p>
-                  </div>
-                </div>
-                
-                <div class="faq-item">
-                  <div class="faq-question">
-                    <i class="fas fa-question"></i>
-                    <span>不同區域的計分方式有何不同？</span>
-                    <i class="fas fa-chevron-down toggle-icon"></i>
-                  </div>
-                  <div class="faq-answer">
-                    <p>不同區域採用不同的計分方式：</p>
-                    <ul>
-                      <li>桃聯區：以五標成績為主，加上作文分數</li>
-                      <li>中投區：各科有不同的加權計分方式</li>
-                      <li>高雄區：五標積分加上作文的特殊加權</li>
-                      <li>彰化區：區分精熟能力和基礎能力的積分計算</li>
-                    </ul>
-                    <p>請確保選擇正確的區域，以獲得最準確的分析結果。</p>
-                  </div>
-                </div>
-                
-                <div class="faq-item">
-                  <div class="faq-question">
-                    <i class="fas fa-question"></i>
-                    <span>分析結果可以保存多久？</span>
-                    <i class="fas fa-chevron-down toggle-icon"></i>
-                  </div>
-                  <div class="faq-answer">
-                    <p>系統不會自動保存您的分析結果，建議使用匯出功能將結果保存為PDF或其他格式。您也可以使用瀏覽器的書籤功能保存分享連結，以便日後查看。</p>
-                  </div>
-                </div>
-                
-                <div class="faq-item">
-                  <div class="faq-question">
-                    <i class="fas fa-question"></i>
-                    <span>如果遇到技術問題該怎麼辦？</span>
-                    <i class="fas fa-chevron-down toggle-icon"></i>
-                  </div>
-                  <div class="faq-answer">
-                    <p>如果您在使用過程中遇到技術問題，可以：</p>
-                    <ul>
-                      <li>刷新頁面重試</li>
-                      <li>清除瀏覽器緩存後再嘗試</li>
-                      <li>嘗試使用不同的瀏覽器</li>
-                      <li>通過頁面底部的聯繫方式與我們的技術支持團隊聯繫</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="contact-section">
-                <h3><i class="fas fa-envelope icon"></i>需要更多協助？</h3>
-                <p>如果您有其他問題或需要進一步的幫助，請隨時與我們聯繫：</p>
-                <div class="contact-methods">
-                  <div class="contact-method">
-                    <i class="fas fa-envelope-open-text"></i>
-                    <span>Email：support@caprcpet.tw</span>
-                  </div>
-                  <div class="contact-method">
-                    <i class="fas fa-comments"></i>
-                    <span>線上客服：週一至週五 9:00-18:00</span>
-                  </div>
-                  <div class="contact-method">
-                    <i class="fas fa-question-circle"></i>
-                    <span>FAQ頁面：<a href="#" class="hover-underline">常見問題解答</a></span>
-                  </div>
-                </div>
-              </div>
+          <p>依序選擇各科目的會考等級：</p>
+          <ul>
+            <li><i class="fas fa-book"></i> 國文：A++ 到 C</li>
+            <li><i class="fas fa-language"></i> 英文：A++ 到 C</li>
+            <li><i class="fas fa-calculator"></i> 數學：A++ 到 C</li>
+            <li><i class="fas fa-flask"></i> 自然：A++ 到 C</li>
+            <li><i class="fas fa-globe"></i> 社會：A++ 到 C</li>
+            <li><i class="fas fa-pen-nib"></i> 作文：0 到 6 級分</li>
+          </ul>
+          <div class="instruction-visual">
+            <i class="fas fa-award icon-large"></i>
+            <div>會考成績等級表</div>
+            <div class="grade-table">
+              <div class="grade-row"><span>&#160;&#160;A++&#160;&#160;</span><span>精熟</span><span>頂標</span></div>
+              <div class="grade-row"><span>&#160;&#160;A+&#160;&#160;</span><span>精熟</span><span>前標</span></div>
+              <div class="grade-row"><span>&#160;&#160;A&#160;&#160;</span><span>精熟</span><span>均標</span></div>
+              <div class="grade-row"><span>&#160;&#160;B++&#160;&#160;</span><span>基礎</span><span>後標</span></div>
+              <div class="grade-row"><span>&#160;&#160;B+&#160;&#160;</span><span>基礎</span><span>底標</span></div>
+              <div class="grade-row"><span>&#160;&#160;B&#160;&#160;</span><span>基礎</span><span>基礎</span></div>
+              <div class="grade-row"><span>&#160;&#160;C&#160;&#160;</span><span>待加強</span><span>待加強</span></div>
             </div>
           </div>
         </div>
-        
-        <div class="instructions-nav-buttons">
-          <button class="nav-button prev-button" disabled>
-            <i class="fas fa-arrow-left"></i> 上一步
-          </button>
-          <div class="step-indicators">
-            <span class="step-indicator active" data-step="1"></span>
-            <span class="step-indicator" data-step="2"></span>
-            <span class="step-indicator" data-step="3"></span>
-            <span class="step-indicator" data-step="4"></span>
-            <span class="step-indicator" data-step="5"></span>
+
+        <div class="instruction-item slide-in" style="animation-delay: 0.6s;">
+          <h3>
+            <i class="fas fa-chart-line icon"></i>分析落點結果
+          </h3>
+          <p>系統會根據您的輸入進行分析並顯示：</p>
+          <ul>
+            <li><i class="fas fa-star"></i> 總積分計算結果</li>
+            <li><i class="fas fa-award"></i> 總積點計算結果</li>
+            <li><i class="fas fa-school"></i> 符合條件的學校列表</li>
+            <li><i class="fas fa-chart-pie"></i> 各類型學校的數量統計</li>
+          </ul>
+          <div class="instruction-visual">
+            <i class="fas fa-search icon-large"></i>
+            <div>系統會自動計算您的總積分，並比對各校最低錄取標準</div>
           </div>
-          <button class="nav-button next-button">
-            下一步 <i class="fas fa-arrow-right"></i>
-          </button>
+        </div>
+
+        <div class="instruction-item slide-in" style="animation-delay: 0.7s;">
+          <h3>
+            <i class="fas fa-file-export icon"></i>匯出和列印分析結果
+          </h3>
+          <p>您可以將分析結果匯出為多種格式，或直接列印：</p>
+          <ul>
+            <li><i class="fas fa-file-alt"></i> 文字檔 (.txt) - 簡單易讀的純文字格式</li>
+            <li><i class="fas fa-file-pdf"></i> PDF檔 (.pdf) - 適合列印或正式保存</li>
+            <li><i class="fas fa-file-excel"></i> Excel檔 (.xlsx) - 可在電子表格軟體中開啟</li>
+            <li><i class="fas fa-file-code"></i> JSON檔 (.json) - 適合程式開發者使用</li>
+            <li><i class="fas fa-print"></i> 直接列印 - 使用瀏覽器列印功能輸出結果</li>
+          </ul>
+          <div class="highlight">
+            <i class="fas fa-lightbulb"></i> 建議將結果匯出保存或列印，方便日後參考比較。
+          </div>
+        </div>
+
+        <div class="instruction-item slide-in" style="animation-delay: 0.8s;">
+          <h3>
+            <i class="fas fa-redo icon"></i>重新分析
+          </h3>
+          <p>您可以隨時：</p>
+          <ul>
+            <li><i class="fas fa-sliders-h"></i> 修改篩選條件</li>
+            <li><i class="fas fa-edit"></i> 更新會考成績</li>
+            <li><i class="fas fa-sync"></i> 重新進行分析</li>
+          </ul>
+          <div class="highlight">
+            <i class="fas fa-sync"></i> 系統會即時更新分析結果，讓您掌握不同選擇的可能性。
+          </div>
+          <div class="instruction-visual">
+            <i class="fas fa-check-circle icon-large"></i>
+            <div>分析結果僅供參考，請務必與學校招生簡章核對</div>
+          </div>
         </div>
         
         <button class="confirm-button hover-glow" onclick="closeInstructions()">
