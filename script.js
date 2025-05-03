@@ -101,24 +101,100 @@ function toggleInstructions() {
   showInstructions();
 }
 
+// Function to change instruction panel
+function changeInstructionPanel(panelNumber) {
+  // Update active panel
+  document.querySelectorAll('.instruction-panel').forEach(panel => {
+    panel.classList.remove('active');
+  });
+  const activePanel = document.querySelector(`.instruction-panel[data-panel="${panelNumber}"]`);
+  activePanel.classList.add('active');
+  
+  // Update active step
+  document.querySelectorAll('.instruction-step').forEach(step => {
+    step.classList.remove('active');
+  });
+  document.querySelector(`.instruction-step[data-step="${panelNumber}"]`).classList.add('active');
+  
+  // Update mobile indicator dots
+  document.querySelectorAll('.indicator-dot').forEach(dot => {
+    dot.classList.remove('active');
+  });
+  document.querySelector(`.indicator-dot[data-dot="${panelNumber}"]`).classList.add('active');
+  
+  // 在手機版中，滾動到頂部，以確保用戶可以看到新內容
+  if (window.innerWidth <= 768) {
+    const instructionsContent = document.querySelector('.instructions-content');
+    if (instructionsContent) {
+      instructionsContent.scrollTop = 0;
+    }
+    
+    // 確保內容區域也顯示
+    const panelContent = activePanel.querySelector('.instruction-panel-content');
+    if (panelContent) {
+      panelContent.style.opacity = '1';
+    }
+  }
+}
+
+// Initialize instruction panel step click handlers
+function initInstructionSteps() {
+  document.querySelectorAll('.instruction-step').forEach(step => {
+    const stepNumber = step.getAttribute('data-step');
+    step.addEventListener('click', () => {
+      changeInstructionPanel(stepNumber);
+    });
+  });
+}
+
 function showInstructions() {
   var modal = document.getElementById('instructionsModal');
   modal.style.display = 'block';
+  // Reset any previous fade-out
+  modal.classList.remove('fade-out');
+  
+  // 修正手機版樣式
+  if (window.innerWidth <= 768) {
+    document.body.style.overflow = 'hidden'; // 防止背景滾動
+    modal.style.overflowY = 'auto';
+  }
+  
+  // Initialize instruction steps
+  initInstructionSteps();
+  
+  // Reset to first panel
+  changeInstructionPanel(1);
 }
 
 function closeInstructions() {
   var modal = document.getElementById('instructionsModal');
-  modal.style.display = 'none';
+  // Add fade-out animation
+  modal.classList.add('fade-out');
+  // Wait for animation to complete before hiding
+  setTimeout(() => {
+    modal.style.display = 'none';
+    modal.classList.remove('fade-out');
+    // 恢復滾動
+    document.body.style.overflow = '';
+  }, 300);
 }
 
 function showDisclaimer() {
   var modal = document.getElementById('disclaimerModal');
   modal.style.display = 'block';
+  // Reset any previous fade-out
+  modal.classList.remove('fade-out');
 }
 
 function closeDisclaimer() {
   var modal = document.getElementById('disclaimerModal');
-  modal.style.display = 'none';
+  // Add fade-out animation
+  modal.classList.add('fade-out');
+  // Wait for animation to complete before hiding
+  setTimeout(() => {
+    modal.style.display = 'none';
+    modal.classList.remove('fade-out');
+  }, 300);
 }
 
 function showInvitationValidationAnimation() {
