@@ -878,98 +878,284 @@
 
       /* 會考重要日期彈窗樣式 */
       .important-dates-modal {
-        max-width: 600px;
+        max-width: 800px;
         max-height: 85vh;
-        overflow-y: auto;
+        background: var(--card-bg-color, #ffffff);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        overflow-y: auto; /* 讓內容可滾動 */
+        position: relative;
+      }
+
+      .important-dates-modal::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--primary-color) 0%, #34a0db 100%);
       }
 
       .important-dates-modal h2 {
         color: var(--primary-color, #3498db);
-        margin-bottom: 20px;
-        font-size: 1.5rem;
+        margin: 0 0 25px 0;
+        padding: 25px 30px 0;
+        font-size: 1.8rem;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
+        position: relative;
       }
 
-      .important-dates-modal .dates-table {
+      .important-dates-modal h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 30px;
+        right: 30px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--primary-color) 0%, transparent 100%);
+      }
+
+      .dates-table {
+        padding: 0 30px 30px;
         display: grid;
-        gap: 15px;
-        margin-bottom: 20px;
+        gap: 20px;
       }
 
-      .important-dates-modal .date-item {
+      .date-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 15px;
-        background-color: rgba(var(--primary-rgb, 52, 152, 219), 0.05);
-        border-radius: 10px;
+        padding: 20px;
+        background: rgba(var(--primary-rgb, 52, 152, 219), 0.05);
+        border-radius: 15px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(var(--primary-rgb, 52, 152, 219), 0.1);
+      }
+
+      .date-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 4px;
+        background: var(--primary-color);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .date-item:hover {
+        transform: translateX(8px);
+        background: rgba(var(--primary-rgb, 52, 152, 219), 0.08);
+        box-shadow: 0 5px 15px rgba(var(--primary-rgb, 52, 152, 219), 0.1);
+      }
+
+      .date-item:hover::before {
+        opacity: 1;
+      }
+
+      .date-label {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-weight: 500;
+        color: var(--text-color, #333);
+        flex: 1;
+      }
+
+      .date-label i {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(var(--primary-rgb, 52, 152, 219), 0.1);
+        border-radius: 50%;
+        padding: 8px;
         transition: all 0.3s ease;
       }
 
-      .important-dates-modal .date-item:hover {
-        transform: translateX(5px);
-        background-color: rgba(var(--primary-rgb, 52, 152, 219), 0.1);
+      .date-item:hover .date-label i {
+        transform: scale(1.1);
+        background: rgba(var(--primary-rgb, 52, 152, 219), 0.2);
       }
 
-      .important-dates-modal .date-label {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 500;
-        color: var(--text-color, #333);
-      }
-
-      .important-dates-modal .date-label i {
-        color: var(--primary-color, #3498db);
-      }
-
-      .important-dates-modal .date-value {
+      .date-value {
         font-weight: 600;
-        color: var(--primary-color, #3498db);
-        background-color: rgba(var(--primary-rgb, 52, 152, 219), 0.1);
-        padding: 5px 10px;
-        border-radius: 6px;
-      }
-
-      /* 深色模式下的重要日期彈窗樣式 */
-      .dark-mode .important-dates-modal {
-        background-color: var(--card-bg-color);
-        color: var(--text-color);
-      }
-
-      .dark-mode .important-dates-modal h2 {
         color: var(--primary-color);
+        background: rgba(var(--primary-rgb, 52, 152, 219), 0.1);
+        padding: 8px 16px;
+        border-radius: 10px;
+        min-width: 120px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
       }
 
-      .dark-mode .important-dates-modal .date-item {
-        background-color: rgba(var(--primary-rgb), 0.1);
+      .date-value::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
       }
 
-      .dark-mode .important-dates-modal .date-item:hover {
-        background-color: rgba(var(--primary-rgb), 0.15);
+      .date-item:hover .date-value {
+        background: rgba(var(--primary-rgb, 52, 152, 219), 0.15);
+        transform: translateY(-2px);
       }
 
-      .dark-mode .important-dates-modal .date-label {
+      .date-item:hover .date-value::before {
+        transform: translateX(100%);
+      }
+
+      .date-item.important {
+        background: rgba(255, 107, 107, 0.05);
+        border-color: rgba(255, 107, 107, 0.1);
+      }
+
+      .date-item.important::before {
+        background: #ff6b6b;
+      }
+
+      .date-item.important .date-label i {
+        color: #ff6b6b;
+        background: rgba(255, 107, 107, 0.1);
+      }
+
+      .date-item.important:hover .date-label i {
+        background: rgba(255, 107, 107, 0.2);
+      }
+
+      .date-item.important .date-value {
+        color: #ff6b6b;
+        background: rgba(255, 107, 107, 0.1);
+      }
+
+      .date-item.important:hover .date-value {
+        background: rgba(255, 107, 107, 0.15);
+      }
+
+      /* 深色模式樣式 */
+      .dark-mode .important-dates-modal {
+        background: var(--card-bg-color);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .dark-mode .date-item {
+        background: rgba(var(--primary-rgb), 0.1);
+        border-color: rgba(var(--primary-rgb), 0.2);
+      }
+
+      .dark-mode .date-item:hover {
+        background: rgba(var(--primary-rgb), 0.15);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .dark-mode .date-label {
         color: var(--text-color);
       }
 
-      .dark-mode .important-dates-modal .date-value {
-        background-color: rgba(var(--primary-rgb), 0.2);
+      .dark-mode .date-label i {
+        background: rgba(var(--primary-rgb), 0.2);
       }
 
+      .dark-mode .date-item:hover .date-label i {
+        background: rgba(var(--primary-rgb), 0.3);
+      }
+
+      .dark-mode .date-value {
+        background: rgba(var(--primary-rgb), 0.2);
+      }
+
+      .dark-mode .date-item:hover .date-value {
+        background: rgba(var(--primary-rgb), 0.25);
+      }
+
+      .dark-mode .date-item.important {
+        background: rgba(255, 107, 107, 0.1);
+        border-color: rgba(255, 107, 107, 0.2);
+      }
+
+      .dark-mode .date-item.important:hover {
+        background: rgba(255, 107, 107, 0.15);
+      }
+
+      /* 移動端適配 */
       @media (max-width: 768px) {
-        .important-dates-modal .date-item {
+        .important-dates-modal {
+          margin: 10px;
+          max-height: 90vh;
+        }
+
+        .important-dates-modal h2 {
+          font-size: 1.5rem;
+          padding: 20px 20px 0;
+        }
+
+        .important-dates-modal h2::after {
+          left: 20px;
+          right: 20px;
+        }
+
+        .dates-table {
+          padding: 0 20px 20px;
+          gap: 15px;
+        }
+
+        .date-item {
+          padding: 15px;
           flex-direction: column;
           align-items: flex-start;
-          gap: 8px;
+          gap: 10px;
         }
-        
-        .important-dates-modal .date-value {
+
+        .date-value {
           align-self: flex-start;
+          min-width: auto;
+          width: 100%;
+        }
+
+        .date-label {
+          width: 100%;
         }
       }
+
+      /* 動畫效果 */
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .date-item {
+        animation: slideInRight 0.5s ease-out forwards;
+        opacity: 0;
+      }
+
+      .date-item:nth-child(1) { animation-delay: 0.1s; }
+      .date-item:nth-child(2) { animation-delay: 0.2s; }
+      .date-item:nth-child(3) { animation-delay: 0.3s; }
+      .date-item:nth-child(4) { animation-delay: 0.4s; }
+      .date-item:nth-child(5) { animation-delay: 0.5s; }
+      .date-item:nth-child(6) { animation-delay: 0.6s; }
     </style>
   </head>
   <body>
@@ -2206,34 +2392,54 @@
           <i class="fas fa-calendar-alt icon"></i> 會考重要日期
         </h2>
         <div class="dates-table">
-          <div class="date-item">
-            <div class="date-label"><i class="fas fa-check-square"></i> 公布答對題數與等級對照表</div>
+          <div class="date-item important">
+            <div class="date-label">
+              <i class="fas fa-check-square"></i>
+              <span>公布答對題數與等級對照表</span>
+            </div>
             <div class="date-value">114/06/03</div>
           </div>
-          <div class="date-item">
-            <div class="date-label"><i class="fas fa-file-alt"></i> 國中會考成績公布</div>
+          <div class="date-item important">
+            <div class="date-label">
+              <i class="fas fa-file-alt"></i>
+              <span>國中會考成績公布</span>
+            </div>
             <div class="date-value">114/06/06</div>
           </div>
           <div class="date-item">
-            <div class="date-label"><i class="fas fa-sort-numeric-down"></i> 個人序位區間公告</div>
+            <div class="date-label">
+              <i class="fas fa-sort-numeric-down"></i>
+              <span>個人序位區間公告</span>
+            </div>
             <div class="date-value">114/06/20</div>
           </div>
           <div class="date-item">
-            <div class="date-label"><i class="fas fa-edit"></i> 就學區免試入學填志願</div>
-            <div class="date-value">114/06/20（開始）（結束依各地區時間為主）</div>
+            <div class="date-label">
+              <i class="fas fa-edit"></i>
+              <span>就學區免試入學填志願</span>
+            </div>
+            <div class="date-value">114/06/20（開始）</div>
           </div>
           <div class="date-item">
-            <div class="date-label"><i class="fas fa-clipboard-list"></i> 就學區免試入學放榜</div>
-            <div class="date-value">114/07/08（依各地區時間為主）</div>
+            <div class="date-label">
+              <i class="fas fa-clipboard-list"></i>
+              <span>就學區免試入學放榜</span>
+            </div>
+            <div class="date-value">114/07/08</div>
           </div>
           <div class="date-item">
-            <div class="date-label"><i class="fas fa-school"></i> 免試入學報到</div>
+            <div class="date-label">
+              <i class="fas fa-school"></i>
+              <span>免試入學報到</span>
+            </div>
             <div class="date-value">114/07/10</div>
           </div>
         </div>
-        <button class="confirm-button hover-glow" onclick="closeImportantDates()">
-          <i class="fas fa-check-circle icon"></i> 我已了解
-        </button>
+        <div class="modal-footer" style="padding: 0 30px 30px;">
+          <button class="confirm-button hover-glow" onclick="closeImportantDates()">
+            <i class="fas fa-check-circle icon"></i> 我已了解
+          </button>
+        </div>
       </div>
     </div>
 
