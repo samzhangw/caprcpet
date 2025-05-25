@@ -1152,6 +1152,7 @@ function displayResults(data) {
     
     // Initialize comparison badge
     updateComparisonBadge();
+    refreshResultsComparisonButtons(); // 新增：渲染後同步按鈕狀態
   }, 100);
 }
 
@@ -2356,6 +2357,44 @@ document.addEventListener('DOMContentLoaded', function() {
     referrer: document.referrer,
     screenSize: `${window.innerWidth}x${window.innerHeight}`
   });
+
+  // 全域互動紀錄：點擊
+  document.body.addEventListener('click', function(e) {
+    const target = e.target.closest('button, a, input[type="button"], input[type="submit"]');
+    if (target) {
+      logUserActivity('ui_click', {
+        tag: target.tagName,
+        id: target.id,
+        class: target.className,
+        text: target.innerText || target.value || '',
+        name: target.name || '',
+        value: target.value || '',
+        href: target.href || '',
+        time: new Date().toISOString()
+      });
+    }
+  });
+
+  // 全域互動紀錄：表單變更
+  document.body.addEventListener('change', function(e) {
+    const target = e.target;
+    if (["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName)) {
+      logUserActivity('ui_change', {
+        tag: target.tagName,
+        id: target.id,
+        class: target.className,
+        name: target.name || '',
+        value: target.value || '',
+        type: target.type || '',
+        time: new Date().toISOString()
+      });
+    }
+  });
+});
+
+// 頁面離開時紀錄
+window.addEventListener('beforeunload', function() {
+  logUserActivity('page_exit', { time: new Date().toISOString() });
 });
 
 // Add school comparison functionality
@@ -2405,35 +2444,82 @@ function addSchoolToComparison(schoolName, schoolType, schoolDetails) {
 function removeSchoolFromComparison(schoolName) {
   let comparisonList = JSON.parse(localStorage.getItem('schoolComparison') || '[]');
   
-  // Find the column to animate before removal
-  const columnIndex = comparisonList.findIndex(school => school.name === schoolName);
-  if (columnIndex > -1) {
-    const columns = document.querySelectorAll(`.school-column`);
-    if (columns[columnIndex]) {
-      columns[columnIndex].classList.add('removing');
-      // Add animation to all cells in this column
-      const table = document.querySelector('.comparison-table');
-      if (table) {
-        const rows = table.querySelectorAll('tr');
-        rows.forEach(row => {
-          const cells = row.querySelectorAll('td, th');
-          if (cells[columnIndex + 1]) { // +1 because first column is for labels
-            cells[columnIndex + 1].classList.add('removing');
-          }
-        });
-      }
-    }
+  // 找到要刪除的學校卡片
+  const schoolCard = document.querySelector(`.school-card[data-school="${schoolName}"]`);
+  if (schoolCard) {
+    schoolCard.classList.add('removing');
   }
   
-  // Remove after animation completes
+  // 移除學校並更新存儲
+  comparisonList = comparisonList.filter(school => school.name !== schoolName);
+  localStorage.setItem('schoolComparison', JSON.stringify(comparisonList));
+  
+  // 更新徽章和按鈕狀態
+  updateComparisonBadge();
+  refreshResultsComparisonButtons();
+  
+  // 延遲更新視圖，等待動畫完成
   setTimeout(() => {
-    comparisonList = comparisonList.filter(school => school.name !== schoolName);
-    localStorage.setItem('schoolComparison', JSON.stringify(comparisonList));
-    updateComparisonBadge();
+    // 如果在比較模態框中
+    if (document.getElementById('advancedComparisonModal')) {
+      // 如果是卡片視圖
+      const cardView = document.getElementById('card-view');
+      if (cardView && cardView.classList.contains('active')) {
+        const cardsContainer = cardView.querySelector('.school-cards-container');
+        if (cardsContainer) {
+          cardsContainer.innerHTML = comparisonList.map(school => `
+            <div class="school-card" data-school="${school.name}">
+              <div class="school-card-header">
+                <div class="school-card-title">${school.name}</div>
+                <div class="school-card-badge">${school.type || '未知'}</div>
+              </div>
+              <div class="school-card-content">
+                <div class="school-card-item">
+                  <div class="school-card-label">學校屬性</div>
+                  <div class="school-card-value">${school.details?.ownership || '未知'}</div>
+                </div>
+                <div class="school-card-item">
+                  <div class="school-card-label">最低錄取分數</div>
+                  <div class="school-card-value">${school.details?.lastYearCutoff || '未知'}</div>
+                </div>
+                <div class="school-card-item">
+                  <div class="school-card-label">入學管道</div>
+                  <div class="school-card-value">${school.details?.admissionMethod || '一般入學'}</div>
+                </div>
+                <div class="school-card-item">
+                  <div class="school-card-label">地理位置</div>
+                  <div class="school-card-value">${school.details?.location || '未知'}</div>
+                </div>
+              </div>
+              <div class="school-card-actions">
+                <button class="school-card-button" onclick="showSchoolDetails('${school.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-search"></i> 查看詳情
+                </button>
+                <button class="school-card-button remove-btn" onclick="removeSchoolFromComparison('${school.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+          `).join('');
+        }
+      } else {
+        // 如果是表格視圖，重新渲染整個比較視圖
+        showAdvancedComparisonView();
+      }
+    }
     
-    // Update the comparison display after removal
-    if (document.getElementById('comparisonContainer')) {
-      showSchoolComparison();
+    // 如果比較清單為空，顯示提示訊息
+    if (comparisonList.length === 0) {
+      const container = document.getElementById('comparisonContainer');
+      if (container) {
+        container.innerHTML = `
+          <div class="empty-comparison">
+            <i class="fas fa-info-circle icon-large"></i>
+            <p>您尚未新增任何學校到比較清單</p>
+            <p>請在分析結果中點擊「加入比較」按鈕新增學校</p>
+          </div>
+        `;
+      }
     }
     
     showNotification(`已從比較清單中移除 ${schoolName}`, 'info');
@@ -3993,7 +4079,7 @@ function showAdvancedComparisonView() {
       <div class="comparison-view-content" id="card-view">
         <div class="school-cards-container">
           ${comparisonList.map(school => `
-            <div class="school-card">
+            <div class="school-card" data-school="${school.name}">
               <div class="school-card-header">
                 <div class="school-card-title">${school.name}</div>
                 <div class="school-card-badge">${school.type || '未知'}</div>
@@ -4020,8 +4106,8 @@ function showAdvancedComparisonView() {
                 <button class="school-card-button" onclick="showSchoolDetails('${school.name.replace(/'/g, "\\'")}')">
                   <i class="fas fa-search"></i> 查看詳情
                 </button>
-                <button class="school-card-button" style="margin-left: 10px; background: #e74c3c;" onclick="removeSchoolFromComparison('${school.name.replace(/'/g, "\\'")}')">
-                  <i class="fas fa-trash-alt"></i> 移除
+                <button class="school-card-button remove-btn" style="margin-left: 10px; background: #e74c3c;" onclick="removeSchoolFromComparison('${school.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-trash-alt"></i>
                 </button>
               </div>
             </div>
@@ -4351,3 +4437,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 800);
   }
 });
+
+// 新增：同步分析區塊加入比較按鈕狀態
+function refreshResultsComparisonButtons() {
+  const comparisonList = JSON.parse(localStorage.getItem('schoolComparison') || '[]');
+  document.querySelectorAll('.school-item').forEach(item => {
+    const btn = item.querySelector('.add-comparison-btn');
+    const schoolName = item.querySelector('.school-name')?.textContent?.trim();
+    if (btn && schoolName) {
+      if (comparisonList.some(s => s.name === schoolName)) {
+        btn.innerHTML = '<i class="fas fa-check"></i> 已加入比較';
+        btn.classList.add('added');
+        btn.disabled = true;
+      } else {
+        btn.innerHTML = '<i class="fas fa-plus-circle"></i> 加入比較';
+        btn.classList.remove('added');
+        btn.disabled = false;
+      }
+    }
+  });
+}
