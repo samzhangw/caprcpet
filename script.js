@@ -393,64 +393,66 @@ function hideInvitationValidationAnimation() {
 }
 
 function showLoading() {
-  const loadingOverlay = document.createElement('div');
-  loadingOverlay.className = 'loading-overlay';
+  const overlay = document.querySelector('.analyzing-overlay');
+  overlay.classList.add('active');
   
-  loadingOverlay.innerHTML = `
-    <div class="loading-spinner-container">
-      <div class="loading-spinner"></div>
-      <div class="loading-text">分析中，請稍候...</div>
-      <div class="loading-progress"></div>
-      <div class="loading-steps">
-        <div class="loading-step" data-step="1">
-          <i class="fas fa-check-circle"></i>
-          <span>驗證邀請碼</span>
-        </div>
-        <div class="loading-step" data-step="2">
-          <i class="fas fa-check-circle"></i>
-          <span>計算總積分</span>
-        </div>
-        <div class="loading-step" data-step="3">
-          <i class="fas fa-check-circle"></i>
-          <span>分析落點區間</span>
-        </div>
-        <div class="loading-step" data-step="4">
-          <i class="fas fa-check-circle"></i>
-          <span>生成分析報告</span>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(loadingOverlay);
+  // 重置所有步驟狀態
+  document.querySelectorAll('.analyzing-step').forEach(step => {
+    step.classList.remove('active', 'completed');
+  });
   
-  requestAnimationFrame(() => {
-    loadingOverlay.style.display = 'flex';
-    simulateLoadingSteps();
-  });
-}
-
-function simulateLoadingSteps() {
-  const steps = document.querySelectorAll('.loading-step');
-  const stepDelay = 500; // Time between each step
-
-  steps.forEach((step, index) => {
-    setTimeout(() => {
-      step.classList.add('active');
-    }, stepDelay * (index + 1));
-  });
+  // 重置進度
+  const circle = document.querySelector('.analyzing-circle');
+  const percentage = document.querySelector('.analyzing-percentage');
+  circle.style.setProperty('--progress', '0%');
+  percentage.textContent = '0%';
+  
+  // 模擬分析進度
+  let currentStep = 1;
+  let progress = 0;
+  
+  const updateProgress = () => {
+    if (progress >= 100) return;
+    
+    progress += 1;
+    circle.style.setProperty('--progress', `${progress}%`);
+    percentage.textContent = `${progress}%`;
+    
+    // 更新步驟狀態
+    const stepThresholds = [25, 50, 75, 100];
+    const newStep = stepThresholds.findIndex(threshold => progress <= threshold) + 1;
+    
+    if (newStep !== currentStep) {
+      // 完成前一個步驟
+      if (currentStep > 0) {
+        const prevStep = document.querySelector(`[data-step="${currentStep}"]`);
+        prevStep.classList.remove('active');
+        prevStep.classList.add('completed');
+      }
+      
+      // 激活新步驟
+      const nextStep = document.querySelector(`[data-step="${newStep}"]`);
+      nextStep.classList.add('active');
+      
+      currentStep = newStep;
+    }
+    
+    if (progress < 100) {
+      setTimeout(updateProgress, 50);
+    }
+  };
+  
+  // 開始第一個步驟
+  const firstStep = document.querySelector('[data-step="1"]');
+  firstStep.classList.add('active');
+  
+  // 開始更新進度
+  setTimeout(updateProgress, 50);
 }
 
 function hideLoading() {
-  const loadingOverlay = document.querySelector('.loading-overlay');
-  if (loadingOverlay) {
-    loadingOverlay.style.opacity = '0';
-    loadingOverlay.style.transition = 'opacity 0.3s ease';
-    
-    setTimeout(() => {
-      loadingOverlay.remove();
-    }, 300);
-  }
+  const overlay = document.querySelector('.analyzing-overlay');
+  overlay.classList.remove('active');
 }
 
 async function logUserActivity(action, details = {}) {
@@ -2444,10 +2446,29 @@ function addSchoolToComparison(schoolName, schoolType, schoolDetails) {
 function removeSchoolFromComparison(schoolName) {
   let comparisonList = JSON.parse(localStorage.getItem('schoolComparison') || '[]');
   
-  // 找到要刪除的學校卡片
+  // 找到要刪除的元素
   const schoolCard = document.querySelector(`.school-card[data-school="${schoolName}"]`);
+  const tableColumn = document.querySelector(`.school-column[data-school="${schoolName}"]`);
+  
+  // 添加移除動畫
   if (schoolCard) {
     schoolCard.classList.add('removing');
+  }
+  if (tableColumn) {
+    tableColumn.classList.add('removing');
+    // 同時為該列的所有單元格添加動畫
+    const table = document.querySelector('.comparison-table');
+    if (table) {
+      const columnIndex = Array.from(table.querySelectorAll('th.school-column')).findIndex(th => th.getAttribute('data-school') === schoolName);
+      if (columnIndex > -1) {
+        table.querySelectorAll('tr').forEach(row => {
+          const cells = row.querySelectorAll('td, th');
+          if (cells[columnIndex + 1]) {
+            cells[columnIndex + 1].classList.add('removing');
+          }
+        });
+      }
+    }
   }
   
   // 移除學校並更新存儲
@@ -2460,52 +2481,9 @@ function removeSchoolFromComparison(schoolName) {
   
   // 延遲更新視圖，等待動畫完成
   setTimeout(() => {
-    // 如果在比較模態框中
+    // 重新渲染整個比較視圖
     if (document.getElementById('advancedComparisonModal')) {
-      // 如果是卡片視圖
-      const cardView = document.getElementById('card-view');
-      if (cardView && cardView.classList.contains('active')) {
-        const cardsContainer = cardView.querySelector('.school-cards-container');
-        if (cardsContainer) {
-          cardsContainer.innerHTML = comparisonList.map(school => `
-            <div class="school-card" data-school="${school.name}">
-              <div class="school-card-header">
-                <div class="school-card-title">${school.name}</div>
-                <div class="school-card-badge">${school.type || '未知'}</div>
-              </div>
-              <div class="school-card-content">
-                <div class="school-card-item">
-                  <div class="school-card-label">學校屬性</div>
-                  <div class="school-card-value">${school.details?.ownership || '未知'}</div>
-                </div>
-                <div class="school-card-item">
-                  <div class="school-card-label">最低錄取分數</div>
-                  <div class="school-card-value">${school.details?.lastYearCutoff || '未知'}</div>
-                </div>
-                <div class="school-card-item">
-                  <div class="school-card-label">入學管道</div>
-                  <div class="school-card-value">${school.details?.admissionMethod || '一般入學'}</div>
-                </div>
-                <div class="school-card-item">
-                  <div class="school-card-label">地理位置</div>
-                  <div class="school-card-value">${school.details?.location || '未知'}</div>
-                </div>
-              </div>
-              <div class="school-card-actions">
-                <button class="school-card-button" onclick="showSchoolDetails('${school.name.replace(/'/g, "\\'")}')">
-                  <i class="fas fa-search"></i> 查看詳情
-                </button>
-                <button class="school-card-button remove-btn" onclick="removeSchoolFromComparison('${school.name.replace(/'/g, "\\'")}')">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          `).join('');
-        }
-      } else {
-        // 如果是表格視圖，重新渲染整個比較視圖
-        showAdvancedComparisonView();
-      }
+      showAdvancedComparisonView();
     }
     
     // 如果比較清單為空，顯示提示訊息
@@ -2586,7 +2564,7 @@ function showSchoolComparison() {
           <tr>
             <th>比較項目</th>
             ${comparisonList.map(school => `
-              <th class="school-column">
+              <th class="school-column" data-school="${school.name}">
                 ${school.name}
                 <button class="remove-school-btn" onclick="removeSchoolFromComparison('${school.name.replace(/'/g, "\\'")}')">
                   <i class="fas fa-times"></i>
@@ -4021,7 +3999,7 @@ function showAdvancedComparisonView() {
               <tr>
                 <th>比較項目</th>
                 ${comparisonList.map(school => `
-                  <th class="school-column">
+                  <th class="school-column" data-school="${school.name}">
                     ${school.name}
                     <button class="remove-school-btn" onclick="removeSchoolFromComparison('${school.name.replace(/'/g, "\\'")}')">
                       <i class="fas fa-times"></i>
@@ -4106,22 +4084,13 @@ function showAdvancedComparisonView() {
                 <button class="school-card-button" onclick="showSchoolDetails('${school.name.replace(/'/g, "\\'")}')">
                   <i class="fas fa-search"></i> 查看詳情
                 </button>
-                <button class="school-card-button remove-btn" style="margin-left: 10px; background: #e74c3c;" onclick="removeSchoolFromComparison('${school.name.replace(/'/g, "\\'")}')">
-                  <i class="fas fa-trash-alt"></i>
+                <button class="school-card-button remove-btn" onclick="removeSchoolFromComparison('${school.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-times"></i>
                 </button>
               </div>
             </div>
           `).join('')}
         </div>
-      </div>
-      
-      <div style="text-align: center; margin-top: 20px;">
-        <button class="confirm-button" onclick="exportComparison()">
-          <i class="fas fa-file-export"></i> 匯出比較結果
-        </button>
-        <button class="confirm-button" style="margin-left: 10px; background: #e74c3c;" onclick="clearComparison()">
-          <i class="fas fa-trash-alt"></i> 清空比較
-        </button>
       </div>
     </div>
   `;
