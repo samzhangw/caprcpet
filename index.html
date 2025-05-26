@@ -1957,11 +1957,11 @@
     </div>
 
     <div id="disclaimerModal" class="modal">
-      <div class="disclaimer-modal-content">
+      <div class="modal-content disclaimer-modal-content">
         <div class="disclaimer-header">
           <h2>
             <i class="fas fa-shield-alt"></i>
-            系統免責聲明
+            免責聲明
           </h2>
           <button class="modal-close" onclick="closeDisclaimer()">
             <i class="fas fa-times"></i>
@@ -1970,77 +1970,58 @@
         
         <div class="disclaimer-body">
           <div class="disclaimer-section">
-            <!-- 主要警告卡片 -->
             <div class="disclaimer-card primary-card">
               <div class="card-icon">
-                <i class="fas fa-exclamation-triangle"></i>
+                <i class="fas fa-exclamation-circle"></i>
               </div>
               <div class="card-content">
                 <h3>重要提醒</h3>
-                <p>本系統提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能因多種因素而有所不同。請務必參考各校官方公告為準。</p>
+                <p>本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因多種因素而有所不同。</p>
               </div>
             </div>
 
-            <!-- 分析限制說明 -->
-            <div class="disclaimer-card info-card">
-              <div class="card-icon">
-                <i class="fas fa-info-circle"></i>
-              </div>
-              <div class="card-content">
-                <h3>分析限制</h3>
-                <ul class="disclaimer-list">
-                  <li><i class="fas fa-check"></i>本系統使用歷年數據進行分析，無法完全預測今年的錄取情況</li>
-                  <li><i class="fas fa-check"></i>各校的招生政策和名額可能隨時調整</li>
-                  <li><i class="fas fa-check"></i>特殊才能、體育績優等加分項目不在分析範圍內</li>
-                  <li><i class="fas fa-check"></i>各區免試入學超額比序項目可能有所不同</li>
-                </ul>
+            <div class="disclaimer-factors">
+              <h3>影響因素包括：</h3>
+              <div class="factors-grid">
+                <div class="factor-item">
+                  <i class="fas fa-university"></i>
+                  <span>招生政策變化</span>
+                </div>
+                <div class="factor-item">
+                  <i class="fas fa-users"></i>
+                  <span>考生整體表現</span>
+                </div>
+                <div class="factor-item">
+                  <i class="fas fa-star"></i>
+                  <span>特殊才能加分</span>
+                </div>
+                <div class="factor-item">
+                  <i class="fas fa-clipboard-list"></i>
+                  <span>招生名額調整</span>
+                </div>
               </div>
             </div>
 
-            <!-- 使用建議 -->
             <div class="disclaimer-card warning-card">
               <div class="card-icon">
                 <i class="fas fa-lightbulb"></i>
               </div>
               <div class="card-content">
-                <h3>使用建議</h3>
-                <ul class="disclaimer-list">
-                  <li><i class="fas fa-check"></i>建議同時參考多個管道的落點分析結果</li>
-                  <li><i class="fas fa-check"></i>諮詢導師、輔導老師等專業人員的意見</li>
-                  <li><i class="fas fa-check"></i>詳細了解各校的特色、課程和未來發展方向</li>
-                  <li><i class="fas fa-check"></i>考慮交通便利性、生活環境等實際因素</li>
+                <h3>建議事項</h3>
+                <ul class="suggestion-list">
+                  <li><i class="fas fa-check-circle"></i>參考多方資訊，不要僅依賴單一分析結果</li>
+                  <li><i class="fas fa-check-circle"></i>諮詢學校輔導老師或升學顧問的專業意見</li>
+                  <li><i class="fas fa-check-circle"></i>密切關注各校官方網站和招生簡章</li>
                 </ul>
               </div>
             </div>
 
-            <!-- 資料安全聲明 -->
-            <div class="disclaimer-card">
+            <div class="disclaimer-card info-card">
               <div class="card-icon">
-                <i class="fas fa-lock"></i>
+                <i class="fas fa-info-circle"></i>
               </div>
               <div class="card-content">
-                <h3>資料安全聲明</h3>
-                <ul class="disclaimer-list">
-                  <li><i class="fas fa-check"></i>本系統不會永久儲存您的個人資料和成績</li>
-                  <li><i class="fas fa-check"></i>所有分析過程皆在您的裝置上進行</li>
-                  <li><i class="fas fa-check"></i>我們重視您的隱私，不會向第三方分享任何資訊</li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- 更新提醒 -->
-            <div class="disclaimer-card update-card">
-              <div class="card-icon">
-                <i class="fas fa-sync-alt"></i>
-              </div>
-              <div class="card-content">
-                <h3>資料更新提醒</h3>
-                <p>本系統會定期更新各校資料，但仍建議您：</p>
-                <ul class="disclaimer-list">
-                  <li><i class="fas fa-check"></i>定期查看各校官網的最新公告</li>
-                  <li><i class="fas fa-check"></i>關注各區免試入學委員會的最新消息</li>
-                  <li><i class="fas fa-check"></i>留意各校的招生說明會資訊</li>
-                </ul>
+                <p>本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。</p>
               </div>
             </div>
           </div>
@@ -2049,7 +2030,7 @@
         <div class="disclaimer-footer">
           <button class="confirm-button" onclick="closeDisclaimer()">
             <i class="fas fa-check-circle"></i>
-            我已詳閱並同意以上聲明
+            我已了解並同意
           </button>
         </div>
       </div>
