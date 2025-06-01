@@ -103,10 +103,18 @@ h3 {
   text-align: left;
   position: relative;
   transition: var(--transition);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 1.2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .form-group:hover {
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--primary-color);
 }
 
 label {
@@ -116,6 +124,20 @@ label {
   color: var(--text-color);
   transition: color 0.3s ease;
   font-size: 1.1rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 1rem;
+  background: var(--primary-color);
+  border-radius: 3px;
 }
 
 label:hover {
@@ -124,20 +146,91 @@ label:hover {
 
 select, input[type="text"] {
   width: 100%;
-  padding: 0.9rem 1rem;
+  padding: 1rem 1.2rem;
   border: 2px solid rgba(0, 0, 0, 0.05);
   border-radius: 12px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background-color: rgba(249, 249, 249, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+  color: var(--text-color);
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+select:hover, input[type="text"]:hover {
+  border-color: rgba(67, 97, 238, 0.3);
+  background-color: #fff;
 }
 
 select:focus, input[type="text"]:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
+  box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
   background-color: #fff;
+}
+
+/* Dark mode styles */
+.dark-mode .form-group {
+  background: rgba(30, 32, 40, 0.8);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .form-group:hover {
+  border-color: var(--primary-color);
+  background: rgba(35, 37, 45, 0.9);
+}
+
+.dark-mode select,
+.dark-mode input[type="text"] {
+  background-color: rgba(45, 47, 55, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.dark-mode select:hover,
+.dark-mode input[type="text"]:hover {
+  background-color: rgba(50, 52, 60, 0.95);
+  border-color: rgba(67, 97, 238, 0.4);
+}
+
+.dark-mode select:focus,
+.dark-mode input[type="text"]:focus {
+  background-color: rgba(55, 57, 65, 1);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .form-group {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  select, input[type="text"] {
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  label {
+    font-size: 1rem;
+  }
+}
+
+/* Add subtle animation for form elements */
+.form-group {
+  animation: formFadeIn 0.5s ease-out;
+}
+
+@keyframes formFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 button {
